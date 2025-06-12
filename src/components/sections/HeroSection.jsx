@@ -1,20 +1,40 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, ArrowLeft } from 'lucide-react';
+import { Plus, ArrowDown, ArrowLeft } from 'lucide-react';
 import { projects } from '../../data/projects';
 
 const HeroSection = ({ isVisible = true }) => {
   const scrollRef = useRef(null);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768); // md breakpoint
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
       if (scrollRef.current) {
-        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-        const maxScroll = scrollWidth - clientWidth;
-        const progress = maxScroll > 0 ? scrollLeft / maxScroll : 0;
-        setScrollProgress(progress);
+        if (isMobile) {
+          // Vertical scroll progress
+          const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
+          const maxScroll = scrollHeight - clientHeight;
+          const progress = maxScroll > 0 ? scrollTop / maxScroll : 0;
+          setScrollProgress(progress);
+        } else {
+          // Horizontal scroll progress
+          const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+          const maxScroll = scrollWidth - clientWidth;
+          const progress = maxScroll > 0 ? scrollLeft / maxScroll : 0;
+          setScrollProgress(progress);
+        }
       }
     };
 
@@ -23,53 +43,75 @@ const HeroSection = ({ isVisible = true }) => {
       scrollElement.addEventListener('scroll', handleScroll);
       return () => scrollElement.removeEventListener('scroll', handleScroll);
     }
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
     const handleWheel = (e) => {
-      if (scrollRef.current && isVisible) {
+      if (scrollRef.current && isVisible && !isMobile) {
         e.preventDefault();
         scrollRef.current.scrollLeft += e.deltaY;
       }
     };
 
-    if (isVisible) {
+    if (isVisible && !isMobile) {
       window.addEventListener('wheel', handleWheel, { passive: false });
       return () => window.removeEventListener('wheel', handleWheel);
     }
-  }, [isVisible]);
+  }, [isVisible, isMobile]);
 
   return (
     <section className={`fixed inset-0 bg-white transition-transform duration-1000 ${isVisible ? 'translate-x-0' : '-translate-x-full'}`}>
       
-      {/* Horizontal Scrolling Images */}
-      <div className="absolute inset-0 pt-32 pb-20 mt-[2.5%]">
+      {/* Scrolling Images - Responsive Layout */}
+      <div className="absolute inset-0 pt-32 pb-20 mt-[36px]">
         <div
           ref={scrollRef}
-          className="flex h-full overflow-x-auto overflow-y-hidden scrollbar-hide relative items-center"
+          className={`
+            h-full scrollbar-hide relative
+            ${isMobile 
+              ? 'flex flex-col overflow-y-auto overflow-x-hidden items-center px-4 gap-6 pb-[20px] pt-24' 
+              : 'flex overflow-x-auto overflow-y-hidden items-center'
+            }
+          `}
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          {/* Scroll Indicator */}
-          <div className="absolute top-1/2 transform -translate-y-1/2 flex items-center gap-4 text-black pointer-events-none z-10"
-               style={{ 
-                 left: `calc(25vw - 200px)`,
-                 fontFamily: 'BwGradual-Regular',
-                 fontSize: '15px',
-                 letterSpacing: '0.1em'
-               }}>
-            <span>SCROLL</span>
-            <div className="w-12 h-px bg-black"></div>
-            <ArrowLeft className="w-4 h-4 rotate-180 text-black" />
+          {/* Scroll Indicator - Responsive */}
+          <div className={`
+            absolute transform flex items-center gap-1 sm:gap-2 md:gap-3 lg:gap-4 text-black pointer-events-none z-10
+            ${isMobile 
+              ? 'top-[40px] left-1/2 -translate-x-1/2 flex-col text-center' 
+              : 'top-1/2 -translate-y-1/2 left-3 sm:left-4 md:left-6 lg:left-8 xl:left-[calc(25vw-200px)]'
+            }
+          `}>
+            <span className="text-[10px] sm:text-xs md:text-sm lg:text-base font-medium tracking-[0.1em] sm:tracking-[0.15em]">
+              SCROLL
+            </span>
+            <div className={`bg-black ${isMobile ? 'h-4 sm:h-6 md:h-8 lg:h-12 w-px' : 'w-4 sm:w-6 md:w-8 lg:w-12 h-px'}`}></div>
+            {isMobile ? (
+              <ArrowDown className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 text-black" />
+            ) : (
+              <ArrowLeft className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 rotate-180 text-black" />
+            )}
           </div>
 
           {projects.map((project, index) => (
             <div 
               key={project.id}
-              onClick={() => navigate(`/project0${index + 1}`)} // <— navigate to /project01, /project02, etc.
-              className="flex-shrink-0 w-[400px] md:w-[480px] lg:w-[500px] h-[240px] md:h-[288px] lg:h-[380px] relative group cursor-pointer mt-[5vh]"
-              style={{ marginLeft: index === 0 ? '25vw' : '2rem' }}
+              onClick={() => navigate(`/project0${index + 1}`)}
+              className={`
+                flex-shrink-0 relative group cursor-pointer
+                ${isMobile 
+                  ? 'w-full max-w-sm h-[250px] sm:h-[280px]' + (index === projects.length - 1 ? ' mb-[50px]' : '')
+                  : 'w-[280px] sm:w-[350px] md:w-[450px] lg:w-[500px] xl:w-[580px] h-[200px] sm:h-[250px] md:h-[320px] lg:h-[380px] xl:h-[388px] mt-[5vh]'
+                }
+              `}
+              style={!isMobile ? { 
+                marginLeft: index === 0 
+                  ? 'clamp(10vw, 25vw, 25vw)' 
+                  : 'clamp(1rem, 2rem, 2rem)' 
+              } : {}}
             >
-              <div className="h-full relative overflow-hidden">
+              <div className="h-full relative overflow-hidden rounded-lg md:rounded-none">
                 <img
                   src={project.image}
                   alt={project.title}
@@ -78,41 +120,28 @@ const HeroSection = ({ isVisible = true }) => {
                 
                 {/* Circle Plus Icon on Hover */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center transform scale-75 group-hover:scale-100 transition-transform duration-500">
-                    <Plus className="w-8 h-8 text-white" />
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-black rounded-full flex items-center justify-center transform scale-75 group-hover:scale-100 transition-transform duration-500">
+                    <Plus className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
                   </div>
                 </div>
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                <div className="absolute bottom-8 left-8 right-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <h3 className="text-2xl font-medium mb-2 tracking-wide">{project.title}</h3>
-                  <p className="text-lg text-gray-200 mb-1 tracking-wide">{project.location}</p>
-                  <p className="text-sm text-gray-300 tracking-wide">{project.year}</p>
+                <div className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-4 sm:left-6 md:left-8 right-4 sm:right-6 md:right-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-medium mb-1 sm:mb-2 tracking-wide">{project.title}</h3>
+                  <p className="text-sm sm:text-base md:text-lg text-gray-200 mb-1 tracking-wide">{project.location}</p>
+                  <p className="text-xs sm:text-sm text-gray-300 tracking-wide">{project.year}</p>
                 </div>
               </div>
             </div>
           ))}
 
-          <div className="flex-shrink-0 w-96" />
+          {/* Spacer for horizontal scroll only */}
+          {!isMobile && <div className="flex-shrink-0 w-48 sm:w-64 md:w-80 lg:w-96" />}
         </div>
       </div>
 
-      {/* Scroll Progress Bar */}
-      <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 w-80">
-        <div className="relative">
-          <div className="w-full h-1 bg-gray-300 rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-black rounded-full transition-all duration-300 ease-out"
-              style={{ width: `${scrollProgress * 100}%` }}
-            />
-          </div>
-          <div 
-            className="absolute top-1/2 transform -translate-y-1/2 w-3 h-3 bg-black rounded-full transition-all duration-300 ease-out"
-            style={{ left: `calc(${scrollProgress * 100}% - 6px)` }}
-          />
-        </div>
-      </div>
+
     </section>
   );
 };

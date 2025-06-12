@@ -9,10 +9,10 @@ const Contact = () => {
     <div className="min-h-screen bg-gray-100  mt-[5%] ">
       <Navigation />
       
-      <main className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 text-gray-900 pt-16 sm:pt-20 lg:pt-24 pb-8">
+      <main className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 text-gray-900 pt-16 sm:pt-20 lg:pt-24 pb-24">
         <div className="max-w-7xl w-full">
           <div className="text-center mb-8 sm:mb-12 lg:mb-16 pt-12">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide mb-4 sm:mb-6 lg:mb-8 animate-fade-in-up leading-tight">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide mb-4 sm:mb-6 lg:mb-8 animate-fade-in-up leading-tight pt-12 sm:pt-0">
               GET IN TOUCH
             </h1>
             <p className="text-base sm:text-lg lg:text-xl text-gray-900 tracking-wide animate-fade-in-up px-2 max-w-2xl mx-auto" style={{animationDelay: '0.2s'}}>
@@ -43,7 +43,7 @@ const Contact = () => {
 
               <div>
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold tracking-wide mb-6 sm:mb-8">Locations</h2>
-                <div className="space-y-6 sm:space-y-8">
+                <div className="space-y-6 sm:space-y-8 pb-12">
                   <div>
                     <p className="text-gray-900 text-xs sm:text-sm tracking-wider mb-3">SALZBURG OFFICE</p>
                     <p className="text-base sm:text-lg lg:text-xl leading-relaxed">
@@ -121,7 +121,7 @@ const Contact = () => {
                     MESSAGE
                   </label>
                   <textarea
-                    rows="5"
+                    rows="1"
                     className="w-full bg-transparent border-b border-gray-600 py-3 sm:py-4 text-gray-900 placeholder-gray-500 focus:border-black focus:outline-none transition-colors resize-none text-base sm:text-lg"
                     placeholder="Tell us about your project..."
                   ></textarea>
@@ -129,7 +129,7 @@ const Contact = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-gray-100 text-gray-100 py-4 sm:py-5 tracking-wider font-medium hover:bg-gray-800 transition-colors text-base sm:text-lg touch-manipulation rounded-full border-2 border-gray-100 hover:border-gray-800"
+                  className="w-full bg-gray-900 text-gray-100 py-4 sm:py-5 tracking-wider font-medium hover:bg-gray-800 transition-colors text-base sm:text-lg touch-manipulation rounded-full border-2 border-gray-100 hover:border-gray-800"
                 >
                   SEND MESSAGE
                 </button>

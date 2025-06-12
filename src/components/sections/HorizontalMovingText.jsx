@@ -19,7 +19,7 @@ const HorizontalMovingText = ({ showOnlyOnHome = true, isHomePage = true }) => {
 
   return (
     <>
-      <div className="fixed left-0 w-full h-[100px] overflow-hidden z-20 pointer-events-none border-b border-gray-800 bg-white top-[88px] md:top-[108px] lg:top-[95px]">
+      <div className="fixed left-0 w-full h-[100px] overflow-hidden z-20 pointer-events-none border-b border-gray-800 bg-white top-[70px] md:top-[85px] lg:top-[95px]">
         <div 
           className="absolute whitespace-nowrap select-none flex items-center h-full"
           style={{ 
