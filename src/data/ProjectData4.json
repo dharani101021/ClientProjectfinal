@@ -1,0 +1,25 @@
+
+{
+  "projects": [
+    {
+      "id": 1,
+      "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=800&fit=crop"
+    },
+    {
+      "id": 2,
+      "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=800&fit=crop"
+    },
+    {
+      "id": 3,
+      "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=800&fit=crop"
+    },
+    {
+      "id": 4,
+      "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=800&fit=crop"
+    },
+    {
+      "id": 5,
+      "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=800&fit=crop"
+    }
+  ]
+}

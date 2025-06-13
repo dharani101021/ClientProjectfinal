@@ -1,0 +1,83 @@
+
+{
+  "hero": {
+    "title": "ABOUT",
+    "subtitle": "STUDIO PRECHT",
+    "description": "Architecture & Design Studio founded on the principles of innovation, sustainability."
+  },
+  "story": {
+    "title": "OUR STORY",
+    "content": [
+      "Studio Precht was founded by Chris Precht to explore the relationship between architecture and nature. We strive to design spaces that nurture well-being and embrace sustainability.",
+      "From our Austrian studio, we develop residential and public projects that are both environmentally responsible and emotionally resonant.",
+      "Our approach combines innovative design thinking with traditional craftsmanship, creating timeless structures that harmonize with their natural surroundings."
+    ],
+    "image": {
+      "src": "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80",
+      "alt": "Studio Precht"
+    },
+    "highlights": [
+      {
+        "value": "2020",
+        "label": "FOUNDED"
+      },
+      {
+        "value": "AUSTRIA",
+        "label": "BASED"
+      }
+    ]
+  },
+  "architect": {
+    "title": "MEET THE ARCHITECT",
+    "name": "CHRIS PRECHT",
+    "position": "Founder & Principal Architect",
+    "bio": [
+      "Chris brings a passion for sustainable architecture, blending creativity and ecological responsibility into every project. His philosophy is rooted in creating spaces that connect people with the natural world.",
+      "With over a decade of experience, Chris has developed a unique approach that balances aesthetic beauty with environmental consciousness."
+    ],
+    "image": {
+      "src": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80",
+      "alt": "Chris Precht"
+    }
+  },
+  "philosophy": {
+    "title": "OUR PHILOSOPHY",
+    "principles": [
+      {
+        "title": "SUSTAINABLE DESIGN",
+        "description": "Every project integrates eco-friendly materials and energy-efficient solutions to minimize environmental impact while maximizing comfort."
+      },
+      {
+        "title": "BIOPHILIC ARCHITECTURE",
+        "description": "We believe in the healing power of nature and incorporate natural elements to create spaces that promote well-being and connection."
+      }
+    ],
+    "image": {
+      "src": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "alt": "Sustainable Architecture"
+    },
+    "statistics": [
+      {
+        "value": "50+",
+        "label": "PROJECTS"
+      },
+      {
+        "value": "12",
+        "label": "YEARS"
+      },
+      {
+        "value": "8",
+        "label": "COUNTRIES"
+      },
+      {
+        "value": "100%",
+        "label": "SUSTAINABLE"
+      }
+    ]
+  },
+  "cta": {
+    "title": "READY TO START YOUR PROJECT?",
+    "description": "Let's discuss how we can create sustainable.",
+    "buttonText": "BACK TO HOME"
+  }
+}
