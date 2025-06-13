@@ -22,16 +22,16 @@ const Footer = () => {
   return (
     <footer className="fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-black">
       <div className="flex flex-col md:flex-row justify-between items-center px-4 md:px-12 py-4 md:py-6 gap-3 md:gap-0">
-        {/* Studio Precht - centered on mobile, left on desktop */}
+        {/* KOODU ARCHITECTURE - centered on mobile, left on desktop */}
         <div className="flex justify-center md:justify-start w-full md:w-[40%]">
-          <button className="text-base md:text-xl font-medium tracking-wider hover:text-gray-600 transition-colors ml-0 md:ml-[10%]">
-            © 2025. STUDIO PRECHT.
+          <button className="text-sm md:text-xl font-medium tracking-wider hover:text-gray-600 transition-colors ml-0 md:ml-[10%]">
+            © 2025. KOODU ARCHITECTURE.
           </button>
         </div>
         
         {/* Instagram - hidden on mobile, shown on desktop */}
         <div className="hidden md:flex justify-center w-full md:w-[20%]">
-          <button className="text-base md:text-xl font-medium tracking-wider hover:text-gray-600 transition-colors flex items-center gap-2">
+          <button className="text-sm md:text-xl font-medium tracking-wider hover:text-gray-600 transition-colors flex items-center gap-2">
             <Instagram className="w-5 h-5" />
             INSTAGRAM
           </button>
@@ -41,7 +41,7 @@ const Footer = () => {
         <div className="hidden md:flex justify-center md:justify-end w-full md:w-[40%]">
           <button 
             onClick={handleContactClick}
-            className="text-base md:text-xl font-medium tracking-wider text-gray-800 hover:text-gray-600 transition-colors cursor-pointer mr-0 md:mr-[10%]"
+            className="text-sm md:text-xl font-medium tracking-wider text-gray-800 hover:text-gray-600 transition-colors cursor-pointer mr-0 md:mr-[10%]"
           >
             CONTACT
           </button>

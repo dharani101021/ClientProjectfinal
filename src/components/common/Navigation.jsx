@@ -23,9 +23,12 @@ const Navigation = () => {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-800">
         {/* Desktop Navigation */}
         <div className="hidden md:flex justify-between items-center px-6 lg:px-12 py-4 lg:py-6" style={fontStyle}>
-          <div className="flex justify-start" style={{ width: '40%' }}>
-            <button onClick={() => navigate('/')} className="ml-[5%] lg:ml-[10%]">
+          <div className="flex justify-start items-center" style={{ width: '40%' }}>
+            <button onClick={() => navigate('/')} className="ml-[5%] lg:ml-[10%] flex items-center gap-4">
               <img src={logo} alt="Studio Precht" className="h-12 lg:h-18" />
+              <span className="text-lg lg:text-xl tracking-wider text-gray-800">
+                KOODU ARCHITECTURE
+              </span>
             </button>
           </div>
           <div className="flex justify-center" style={{ width: '20%' }}>
@@ -52,8 +55,11 @@ const Navigation = () => {
 
         {/* Mobile Navigation */}
         <div className="md:hidden flex justify-between items-center px-4 py-4" style={fontStyle}>
-          <button onClick={() => navigate('/')} className="text-lg">
+          <button onClick={() => navigate('/')} className="text-lg flex items-center gap-2">
             <img src={logo} alt="Studio Precht" className="h-8" />
+            <span className="text-sm tracking-wider text-gray-800">
+              KOODU ARCHITECTURE
+            </span>
           </button>
           <button onClick={toggleMobileMenu} className="p-2">
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

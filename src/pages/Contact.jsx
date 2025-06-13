@@ -9,7 +9,7 @@ const Contact = () => {
     <div className="min-h-screen bg-gray-100  mt-[5%] ">
       <Navigation />
       
-      <main className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 text-gray-900 pt-16 sm:pt-20 lg:pt-24 pb-28">
+      <main className="min-h-screen flex items-center  justify-center px-4 sm:px-6 lg:px-8 text-gray-900 pt-16 sm:pt-20 lg:pt-24 pb-28">
         <div className="max-w-7xl w-full">
           <div className="text-center mb-8 sm:mb-12 lg:mb-16 pt-12">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide mb-4 sm:mb-6 lg:mb-8 animate-fade-in-up leading-tight pt-8 sm:pt-0 pb-[25px]">
@@ -30,7 +30,7 @@ const Contact = () => {
                   <div>
                     <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold tracking-wide mb-6 sm:mb-8">EMAIL</h2>
                     <a href="mailto:hello@precht.at" className="hover:text-gray-900 transition-colors break-all block">
-                      hello@precht.at
+                      hello@koodu.at
                     </a>
                   </div>
                   <div>

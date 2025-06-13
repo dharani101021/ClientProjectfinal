@@ -79,7 +79,7 @@ const HeroSection = ({ isVisible = true }) => {
           <div className={`
             absolute transform flex items-center gap-1 sm:gap-2 md:gap-3 lg:gap-4 text-black pointer-events-none z-10
             ${isMobile
-              ? 'top-[5px] left-1/2 -translate-x-1/2 flex-col text-center'
+              ? 'top-[15px] left-1/2 -translate-x-1/2 flex-col text-center'
               : 'top-1/2 -translate-y-1/2 left-3 sm:left-4 md:left-6 lg:left-8 xl:left-[calc(25vw-200px)]'
             }
           `}>
