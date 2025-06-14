@@ -24,7 +24,7 @@ const Navigation = () => {
         {/* Desktop Navigation */}
         <div className="hidden md:flex justify-between items-center px-6 lg:px-12 py-4 lg:py-6" style={fontStyle}>
           <div className="flex justify-start items-center" style={{ width: '40%' }}>
-            <button onClick={() => navigate('/')} className="ml-[5%] lg:ml-[10%] flex items-center gap-4">
+            <button onClick={() => navigate('/')} className="ml-[5%] lg:ml-[10%] flex items-center gap-4 cursor-pointer">
               <img src={logo} alt="Studio Precht" className="h-12 lg:h-18" />
               <span className="text-lg lg:text-xl tracking-wider text-gray-800">
                 KOODU ARCHITECTURE
@@ -34,8 +34,8 @@ const Navigation = () => {
           <div className="flex justify-center" style={{ width: '20%' }}>
             <button
               onClick={() => navigate('/')}
-              className={`text-lg lg:text-xl tracking-wider hover:text-gray-600 transition-colors ${
-                location.pathname === '/' ? 'text-black' : 'text-gray-800'
+              className={`text-lg lg:text-xl tracking-wider hover:text-gray-600 transition-colors cursor-pointer ${
+                location.pathname === '/' ? 'text-black font-bold' : 'text-gray-800'
               }`}
             >
               PROJECTS 01-05
@@ -44,8 +44,8 @@ const Navigation = () => {
           <div className="flex justify-end" style={{ width: '40%' }}>
             <button
               onClick={() => navigate('/about')}
-              className={`text-lg lg:text-xl tracking-wider hover:text-gray-600 transition-colors mr-[5%] lg:mr-[10%] ${
-                location.pathname === '/about' ? 'text-black' : 'text-gray-800'
+              className={`text-lg lg:text-xl tracking-wider hover:text-gray-600 transition-colors mr-[5%] lg:mr-[10%] cursor-pointer ${
+                location.pathname === '/about' ? 'text-black font-bold' : 'text-gray-800'
               }`}
             >
               ABOUT
@@ -55,13 +55,13 @@ const Navigation = () => {
 
         {/* Mobile Navigation */}
         <div className="md:hidden flex justify-between items-center px-4 py-4" style={fontStyle}>
-          <button onClick={() => navigate('/')} className="text-lg flex items-center gap-2">
+          <button onClick={() => navigate('/')} className="text-lg flex items-center gap-2 cursor-pointer">
             <img src={logo} alt="Studio Precht" className="h-8" />
             <span className="text-sm tracking-wider text-gray-800">
               KOODU ARCHITECTURE
             </span>
           </button>
-          <button onClick={toggleMobileMenu} className="p-2">
+          <button onClick={toggleMobileMenu} className="p-2 cursor-pointer">
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
@@ -72,24 +72,24 @@ const Navigation = () => {
             <div className="flex flex-col py-4">
               <button
                 onClick={() => handleNavigation('/')}
-                className={`px-6 py-4 text-lg tracking-wider text-left hover:bg-gray-50 transition-colors ${
-                  location.pathname === '/' ? 'text-black bg-gray-50' : 'text-gray-800'
+                className={`px-6 py-4 text-lg tracking-wider text-left hover:bg-gray-50 transition-colors cursor-pointer ${
+                  location.pathname === '/' ? 'text-black bg-gray-50 font-bold' : 'text-gray-800'
                 }`}
               >
                 PROJECTS 01-05
               </button>
               <button
                 onClick={() => handleNavigation('/about')}
-                className={`px-6 py-4 text-lg tracking-wider text-left hover:bg-gray-50 transition-colors ${
-                  location.pathname === '/about' ? 'text-black bg-gray-50' : 'text-gray-800'
+                className={`px-6 py-4 text-lg tracking-wider text-left hover:bg-gray-50 transition-colors cursor-pointer ${
+                  location.pathname === '/about' ? 'text-black bg-gray-50 font-bold' : 'text-gray-800'
                 }`}
               >
                 ABOUT
               </button>
               <button
                 onClick={() => handleNavigation('/contact')}
-                className={`px-6 py-4 text-lg tracking-wider text-left hover:bg-gray-50 transition-colors ${
-                  location.pathname === '/contact' ? 'text-black bg-gray-50' : 'text-gray-800'
+                className={`px-6 py-4 text-lg tracking-wider text-left hover:bg-gray-50 transition-colors cursor-pointer ${
+                  location.pathname === '/contact' ? 'text-black bg-gray-50 font-bold' : 'text-gray-800'
                 }`}
               >
                 CONTACT
