@@ -11,31 +11,22 @@ const About = () => {
   const containerRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
   const { scrollYProgress } = useScroll();
-
-  // Transform for horizontal scrolling (desktop only)
   const x = useTransform(scrollYProgress, [0, 1], ['0%', '-80%']);
 
   useEffect(() => {
-    // Check if mobile
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
-
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-
-    // Set body height for horizontal scrolling on desktop only
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
     const updateHeight = () => {
       if (!isMobile && containerRef.current) {
         const scrollWidth = containerRef.current.scrollWidth;
-        const windowWidth = window.innerWidth;
-        document.body.style.height = `${(scrollWidth - windowWidth) * 1.2 + window.innerHeight}px`;
+        document.body.style.height = `${(scrollWidth - window.innerWidth) * 1.2 + window.innerHeight}px`;
       } else {
         document.body.style.height = 'auto';
       }
     };
 
+    checkMobile();
     updateHeight();
+    window.addEventListener('resize', checkMobile);
     window.addEventListener('resize', updateHeight);
     
     return () => {
@@ -45,284 +36,176 @@ const About = () => {
     };
   }, [isMobile]);
 
-  const handleBackToHome = () => {
-    navigate('/');
+  const Section = ({ children, bg = "bg-gray-50", mobile = false }) => (
+    <section className={`${mobile ? 'py-12 px-4' : 'w-screen h-full flex items-center justify-center px-8 py-8'} ${bg}`}>
+      {children}
+    </section>
+  );
+
+  const ImageContainer = ({ src, alt, isMobile = false, isDesktop = false }) => {
+    if (isDesktop) {
+      return (
+        <div className="w-[350px] h-[350px] bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden">
+          <img src={src} alt={alt} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+        </div>
+      );
+    }
+    return (
+      <div className="w-full max-w-sm aspect-square bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden">
+        <img src={src} alt={alt} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+      </div>
+    );
   };
 
-  // Mobile Layout - Normal vertical scrolling
+  const AnimatedText = ({ children, className = "", delay = 0, ...props }) => (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      {...(props.animate ? { animate: { opacity: 1, y: 0 } } : { whileInView: { opacity: 1, y: 0 } })}
+      transition={{ duration: 0.8, delay }}
+      viewport={{ once: true }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+
   if (isMobile) {
     return (
       <div className="min-h-screen bg-gray-50 pt-24 pb-24">
         <Navigation />
-
-        {/* Section 1: Hero */}
-        <section className="pt-20 pb-12 px-4 bg-gray-50">
+        
+        {/* Hero */}
+        <Section mobile>
           <div className="max-w-4xl mx-auto text-center">
-            <motion.h1
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.2 }}
-              className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6"
-              style={{ lineHeight: '1.2' }}
-            >
-              {aboutData.hero.title}
-              <br />
-              <span className="bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent">
-                {aboutData.hero.subtitle}
-              </span>
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.4 }}
-              className="text-sm sm:text-base text-gray-600 leading-relaxed text-justify"
-              style={{ lineHeight: '1.7' }}
-            >
-              {aboutData.hero.description}
-            </motion.p>
+            <AnimatedText animate delay={0.2}>
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-6" style={{ lineHeight: '1.2' }}>
+                {aboutData.hero.title}<br />
+                <span className="bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent">
+                  {aboutData.hero.subtitle}
+                </span>
+              </h1>
+            </AnimatedText>
+            <AnimatedText animate delay={0.4}>
+              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed text-justify" style={{ lineHeight: '1.7' }}>
+                {aboutData.hero.description}
+              </p>
+            </AnimatedText>
           </div>
-        </section>
+        </Section>
 
-        {/* Section 2: Our Story */}
-        <section className="py-12 px-4 bg-gray-50">
+        {/* Story */}
+        <Section mobile>
           <div className="max-w-4xl mx-auto">
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-xl sm:text-2xl md:text-3xl font-bold mb-8 text-center"
-            >
-              {aboutData.story.title}
-            </motion.h2>
-
+            <AnimatedText>
+              <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-center sm:mb-8 mb-6">
+                {aboutData.story.title}
+              </h2>
+            </AnimatedText>
             <div className="space-y-8">
-              {/* Image */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-                className="flex justify-center"
-              >
-                <div className="w-full max-w-sm aspect-square bg-gradient-to-br from-gray-200 to-gray-300 rounded-xl overflow-hidden">
-                  <img
-                    src={aboutData.story.image.src}
-                    alt={aboutData.story.image.alt}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                  />
-                </div>
-              </motion.div>
-
-              {/* Text Content */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                viewport={{ once: true }}
-                className="space-y-4"
-              >
-                {aboutData.story.content.map((paragraph, index) => (
-                  <p
-                    key={index}
-                    className={`leading-relaxed text-sm sm:text-base text-justify ${
-                      index === aboutData.story.content.length - 1 ? 'text-gray-600' : 'text-gray-700'
-                    }`}
-                    style={{ lineHeight: '1.6' }}
-                  >
+              <AnimatedText className="flex justify-center">
+                <ImageContainer src={aboutData.story.image.src} alt={aboutData.story.image.alt} />
+              </AnimatedText>
+              <AnimatedText delay={0.2} className="space-y-4">
+                {aboutData.story.content.map((paragraph, i) => (
+                  <p key={i} className={`leading-relaxed text-xs sm:text-sm text-justify ${i === aboutData.story.content.length - 1 ? 'text-gray-600' : 'text-gray-700'}`} style={{ lineHeight: '1.6' }}>
                     {paragraph}
                   </p>
                 ))}
-
-                {/* Highlights */}
                 <div className="grid grid-cols-2 gap-4 pt-6 mt-6 border-t border-gray-200">
-                  {aboutData.story.highlights.map((highlight, index) => (
-                    <div key={index} className="text-center">
-                      <div className="text-lg sm:text-xl font-bold text-gray-900 mb-1">
-                        {highlight.value}
-                      </div>
-                      <div className="text-xs text-gray-600">
-                        {highlight.label}
-                      </div>
+                  {aboutData.story.highlights.map((highlight, i) => (
+                    <div key={i} className="text-center">
+                      <div className="text-base sm:text-lg font-bold text-gray-900 mb-1">{highlight.value}</div>
+                      <div className="text-xs text-gray-600">{highlight.label}</div>
                     </div>
                   ))}
                 </div>
-              </motion.div>
+              </AnimatedText>
             </div>
           </div>
-        </section>
+        </Section>
 
-        {/* Section 3: Meet the Architect */}
-        <section className="py-12 px-4 bg-white">
+        {/* Architect */}
+        <Section mobile bg="bg-white">
           <div className="max-w-4xl mx-auto">
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-xl sm:text-2xl md:text-3xl font-bold mb-8 text-center"
-            >
-              {aboutData.architect.title}
-            </motion.h2>
-
+            <AnimatedText>
+              <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-8 text-center">
+                {aboutData.architect.title}
+              </h2>
+            </AnimatedText>
             <div className="space-y-8">
-              {/* Profile Image */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-                className="flex justify-center"
-              >
-                <div className="w-full max-w-sm aspect-square bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg overflow-hidden">
-                  <img
-                    src={aboutData.architect.image.src}
-                    alt={aboutData.architect.image.alt}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                  />
-                </div>
-              </motion.div>
-
-              {/* Profile Info */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                viewport={{ once: true }}
-                className="text-center space-y-4"
-              >
+              <AnimatedText className="flex justify-center">
+                <ImageContainer src={aboutData.architect.image.src} alt={aboutData.architect.image.alt} />
+              </AnimatedText>
+              <AnimatedText delay={0.2} className="text-center space-y-4">
                 <div>
-                  <h3 className="text-lg sm:text-xl font-medium mb-2">
-                    {aboutData.architect.name}
-                  </h3>
-                  <p className="text-gray-600 mb-3 text-sm sm:text-base">
-                    {aboutData.architect.position}
-                  </p>
+                  <h3 className="text-base sm:text-lg font-medium mb-2">{aboutData.architect.name}</h3>
+                  <p className="text-gray-600 mb-3 text-xs sm:text-sm">{aboutData.architect.position}</p>
                 </div>
-
                 <div className="space-y-3">
-                  {aboutData.architect.bio.map((paragraph, index) => (
-                    <p
-                      key={index}
-                      className="text-gray-500 leading-relaxed text-sm sm:text-base text-justify"
-                      style={{ lineHeight: '1.6' }}
-                    >
+                  {aboutData.architect.bio.map((paragraph, i) => (
+                    <p key={i} className="text-gray-500 leading-relaxed text-xs sm:text-sm text-justify" style={{ lineHeight: '1.6' }}>
                       {paragraph}
                     </p>
                   ))}
                 </div>
-              </motion.div>
+              </AnimatedText>
             </div>
           </div>
-        </section>
+        </Section>
 
-        {/* Section 4: Our Philosophy & Approach */}
-        <section className="py-12 px-4 bg-gray-50">
+        {/* Philosophy */}
+        <Section mobile>
           <div className="max-w-4xl mx-auto">
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-xl sm:text-2xl md:text-3xl font-bold mb-8 text-center"
-            >
-              {aboutData.philosophy.title}
-            </motion.h2>
-
+            <AnimatedText>
+              <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-8 text-center">
+                {aboutData.philosophy.title}
+              </h2>
+            </AnimatedText>
             <div className="space-y-8">
-              {/* Philosophy Cards */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-                className="space-y-4"
-              >
-                {aboutData.philosophy.principles.map((principle, index) => (
-                  <div key={index} className="bg-white p-4 rounded-lg shadow-sm">
-                    <h3 className="text-sm sm:text-base font-semibold mb-2 text-gray-900">
-                      {principle.title}
-                    </h3>
-                    <p
-                      className="text-gray-600 leading-relaxed text-xs sm:text-sm text-justify"
-                      style={{ lineHeight: '1.5' }}
-                    >
+              <AnimatedText className="space-y-4">
+                {aboutData.philosophy.principles.map((principle, i) => (
+                  <div key={i} className="bg-white p-4 rounded-lg shadow-sm">
+                    <h3 className="text-xs sm:text-sm font-semibold mb-2 text-gray-900">{principle.title}</h3>
+                    <p className="text-gray-600 leading-relaxed text-xs text-justify" style={{ lineHeight: '1.5' }}>
                       {principle.description}
                     </p>
                   </div>
                 ))}
-              </motion.div>
-
-              {/* Philosophy Image */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                viewport={{ once: true }}
-                className="flex justify-center"
-              >
-                <div className="w-full max-w-sm aspect-square bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg overflow-hidden">
-                  <img
-                    src={aboutData.philosophy.image.src}
-                    alt={aboutData.philosophy.image.alt}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                  />
-                </div>
-              </motion.div>
-
-              {/* Statistics */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                viewport={{ once: true }}
-                className="grid grid-cols-2 gap-4 pt-6"
-              >
-                {aboutData.philosophy.statistics.map((stat, index) => (
-                  <div key={index} className="text-center">
-                    <div className="text-xl sm:text-2xl font-bold text-gray-900 mb-1">
-                      {stat.value}
-                    </div>
-                    <div className="text-xs sm:text-sm text-gray-600 uppercase tracking-wide">
-                      {stat.label}
-                    </div>
+              </AnimatedText>
+              <AnimatedText delay={0.2} className="flex justify-center">
+                <ImageContainer src={aboutData.philosophy.image.src} alt={aboutData.philosophy.image.alt} />
+              </AnimatedText>
+              <AnimatedText delay={0.4} className="grid grid-cols-2 gap-4 pt-6">
+                {aboutData.philosophy.statistics.map((stat, i) => (
+                  <div key={i} className="text-center">
+                    <div className="text-lg sm:text-xl font-bold text-gray-900 mb-1">{stat.value}</div>
+                    <div className="text-xs text-gray-600 uppercase tracking-wide">{stat.label}</div>
                   </div>
                 ))}
-              </motion.div>
+              </AnimatedText>
             </div>
           </div>
-        </section>
+        </Section>
 
-        {/* Section 5: CTA */}
-        <section className="py-12 px-4 bg-white">
+        {/* CTA */}
+        <Section mobile bg="bg-white">
           <div className="max-w-3xl mx-auto text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="space-y-6"
-            >
-              <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">
-                {aboutData.cta.title}
-              </h2>
-              <p
-                className="text-gray-600 text-sm sm:text-base leading-relaxed text-justify"
-                style={{ lineHeight: '1.7' }}
-              >
+            <AnimatedText className="space-y-6">
+              <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-900">{aboutData.cta.title}</h2>
+              <p className="text-gray-600 text-xs sm:text-sm leading-relaxed text-justify" style={{ lineHeight: '1.7' }}>
                 {aboutData.cta.description}
               </p>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={handleBackToHome}
-                className="bg-gray-900 text-white px-6 py-3 rounded-lg text-sm sm:text-base font-medium hover:bg-gray-800 transition-colors shadow-lg"
+                onClick={() => navigate('/')}
+                className="bg-gray-900 text-white px-6 py-3 rounded-lg text-xs sm:text-sm font-medium hover:bg-gray-800 transition-colors shadow-lg"
               >
                 {aboutData.cta.buttonText}
               </motion.button>
-            </motion.div>
+            </AnimatedText>
           </div>
-        </section>
+        </Section>
 
         <Footer />
         <WhatsAppButton />
@@ -330,174 +213,81 @@ const About = () => {
     );
   }
 
-  // Desktop Layout - Horizontal scrolling
+  // Desktop Layout
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
-
-      {/* Main Horizontal Scrolling Content */}
-      <div
-        className="fixed left-0 w-full overflow-hidden"
-        style={{
-          top: '80px',
-          height: 'calc(100vh - 160px)',
-        }}
-      >
+      <div className="fixed left-0 w-full overflow-hidden" style={{ top: '80px', height: 'calc(100vh - 160px)' }}>
         <motion.div ref={containerRef} style={{ x }} className="flex h-full w-[500vw] overflow-hidden gap-0">
-          {/* Section 1: Hero */}
-          <div className="w-screen h-full flex items-center justify-center bg-gray-50 px-8 py-28">
+          
+          {/* Hero */}
+          <Section>
             <div className="max-w-7xl mx-auto text-center px-10 pt-28 pb-12">
-              <motion.h1
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.2 }}
-                className="text-4xl lg:text-6xl xl:text-7xl font-bold mb-8"
-                style={{ lineHeight: '1.1' }}
-              >
-                {aboutData.hero.title}
-                <br />
-                <span className="bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent">
-                  {aboutData.hero.subtitle}
-                </span>
-              </motion.h1>
-              <motion.p
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.4 }}
-                className="text-lg xl:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed text-justify"
-                style={{ lineHeight: '1.8' }}
-              >
-                {aboutData.hero.description}
-              </motion.p>
+              <AnimatedText animate delay={0.2}>
+                <h1 className="text-3xl lg:text-5xl xl:text-6xl font-bold mb-8" style={{ lineHeight: '1.1' }}>
+                  {aboutData.hero.title}<br />
+                  <span className="bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent">
+                    {aboutData.hero.subtitle}
+                  </span>
+                </h1>
+              </AnimatedText>
+              <AnimatedText animate delay={0.4}>
+                <p className="text-base xl:text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed text-justify" style={{ lineHeight: '1.8' }}>
+                  {aboutData.hero.description}
+                </p>
+              </AnimatedText>
             </div>
-          </div>
+          </Section>
 
-          {/* Section 2: Our Story */}
-          <div className="w-screen h-full flex items-center justify-center bg-gray-50 px-8 py-8">
-            <div className="w-full max-w-7xl mx-auto">
-              <motion.h2
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-                className="text-3xl lg:text-4xl font-bold mb-12 text-center"
-              >
-                {aboutData.story.title}
-              </motion.h2>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center h-full">
-                {/* Image */}
-                <motion.div
-                  initial={{ opacity: 0, x: -50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8 }}
-                  viewport={{ once: true }}
-                  className="w-full flex justify-center pt-8"
-                >
-                  <div className="w-[350px] h-[350px] bg-gradient-to-br from-gray-200 to-gray-300 rounded-xl overflow-hidden">
-                    <img
-                      src={aboutData.story.image.src}
-                      alt={aboutData.story.image.alt}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                    />
-                  </div>
+          {/* Story */}
+          <Section>
+            <div className="w-full max-w-7xl mx-auto pt-28">
+              <AnimatedText>
+                <h2 className="text-2xl lg:text-3xl font-bold  text-center  ">{aboutData.story.title}</h2>
+              </AnimatedText>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center h-full">
+                <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="w-full flex justify-center pt-2">
+                  <ImageContainer src={aboutData.story.image.src} alt={aboutData.story.image.alt} size="w-[350px] h-[350px]" aspect="" />
                 </motion.div>
-
-                {/* Text Content */}
-                <motion.div
-                  initial={{ opacity: 0, x: 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  viewport={{ once: true }}
-                  className="space-y-6"
-                >
+                <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }} viewport={{ once: true }} className="space-y-6">
                   <div className="space-y-4">
-                    {aboutData.story.content.map((paragraph, index) => (
-                      <p
-                        key={index}
-                        className={`leading-relaxed text-lg text-justify ${
-                          index === aboutData.story.content.length - 1 ? 'text-gray-600' : 'text-gray-700'
-                        }`}
-                        style={{ lineHeight: '1.6' }}
-                      >
+                    {aboutData.story.content.map((paragraph, i) => (
+                      <p key={i} className={`leading-relaxed text-base text-justify ${i === aboutData.story.content.length - 1 ? 'text-gray-600' : 'text-gray-700'}`} style={{ lineHeight: '1.6' }}>
                         {paragraph}
                       </p>
                     ))}
                   </div>
-
-                  {/* Highlights */}
                   <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-200">
-                    {aboutData.story.highlights.map((highlight, index) => (
-                      <div key={index} className="text-center">
-                        <div className="text-2xl font-bold text-gray-900 mb-1">
-                          {highlight.value}
-                        </div>
-                        <div className="text-xs text-gray-600">
-                          {highlight.label}
-                        </div>
+                    {aboutData.story.highlights.map((highlight, i) => (
+                      <div key={i} className="text-center">
+                        <div className="text-xl font-bold text-gray-900 mb-1">{highlight.value}</div>
+                        <div className="text-xs text-gray-600">{highlight.label}</div>
                       </div>
                     ))}
                   </div>
                 </motion.div>
               </div>
             </div>
-          </div>
+          </Section>
 
-          {/* Section 3: Meet the Architect */}
-          <div className="w-screen h-full flex items-center bg-gray-50 px-8 py-8">
-            <div className="max-w-7xl mx-auto w-full">
-              <motion.h2
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-                className="text-2xl lg:text-3xl font-bold mb-8 text-center"
-              >
-                {aboutData.architect.title}
-              </motion.h2>
-
+          {/* Architect */}
+          <Section>
+            <div className="max-w-7xl mx-auto w-full pt-28">
+              <AnimatedText>
+                <h2 className="text-xl lg:text-2xl font-bold text-center">{aboutData.architect.title}</h2>
+              </AnimatedText>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center h-full">
-                {/* Profile Image */}
-                <motion.div
-                  initial={{ opacity: 0, x: -50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8 }}
-                  viewport={{ once: true }}
-                  className="flex justify-center lg:justify-start pt-12"
-                >
-                  <div className="w-[350px] h-[350px] bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg overflow-hidden">
-                    <img
-                      src={aboutData.architect.image.src}
-                      alt={aboutData.architect.image.alt}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                    />
-                  </div>
+                <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="flex justify-center lg:justify-start pt-2">
+                  <ImageContainer src={aboutData.architect.image.src} alt={aboutData.architect.image.alt} size="w-[350px] h-[350px]" aspect="" />
                 </motion.div>
-
-                {/* Profile Info */}
-                <motion.div
-                  initial={{ opacity: 0, x: 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  viewport={{ once: true }}
-                  className="text-center lg:text-left space-y-4"
-                >
+                <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }} viewport={{ once: true }} className="text-center lg:text-left space-y-4">
                   <div>
-                    <h3 className="text-xl font-medium mb-2">
-                      {aboutData.architect.name}
-                    </h3>
-                    <p className="text-gray-600 mb-3 text-lg">
-                      {aboutData.architect.position}
-                    </p>
+                    <h3 className="text-lg font-medium mb-2">{aboutData.architect.name}</h3>
+                    <p className="text-gray-600 mb-3 text-base">{aboutData.architect.position}</p>
                   </div>
-
                   <div className="space-y-3">
-                    {aboutData.architect.bio.map((paragraph, index) => (
-                      <p
-                        key={index}
-                        className="text-gray-500 leading-relaxed text-base text-justify"
-                        style={{ lineHeight: '1.6' }}
-                      >
+                    {aboutData.architect.bio.map((paragraph, i) => (
+                      <p key={i} className="text-gray-500 leading-relaxed text-sm text-justify" style={{ lineHeight: '1.6' }}>
                         {paragraph}
                       </p>
                     ))}
@@ -505,118 +295,65 @@ const About = () => {
                 </motion.div>
               </div>
             </div>
-          </div>
+          </Section>
 
-          {/* Section 4: Our Philosophy & Approach */}
-          <div className="w-screen h-full flex items-center bg-white px-8 py-8">
-            <div className="max-w-7xl mx-auto w-full">
-              <motion.h2
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-                className="text-2xl lg:text-3xl font-bold mb-8 text-center"
-              >
-                {aboutData.philosophy.title}
-              </motion.h2>
-
+          {/* Philosophy */}
+          <Section bg="bg-white">
+            <div className="max-w-7xl mx-auto w-full pt-28">
+              <AnimatedText>
+                <h2 className="text-xl lg:text-2xl font-bold text-center">{aboutData.philosophy.title}</h2>
+              </AnimatedText>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                {/* Philosophy Cards */}
-                <motion.div
-                  initial={{ opacity: 0, x: -50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8 }}
-                  viewport={{ once: true }}
-                  className="space-y-4 px-10 pt-8 pb-4"
-                >
-                  {aboutData.philosophy.principles.map((principle, index) => (
-                    <div key={index} className="bg-gray-50 p-4 rounded-lg">
-                      <h3 className="text-base font-semibold mb-2 text-gray-900">
-                        {principle.title}
-                      </h3>
-                      <p
-                        className="text-gray-600 leading-relaxed text-sm text-justify"
-                        style={{ lineHeight: '1.5' }}
-                      >
+                <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="space-y-4 px-10 pt-8 pb-4">
+                  {aboutData.philosophy.principles.map((principle, i) => (
+                    <div key={i} className="bg-gray-50 p-4 rounded-lg">
+                      <h3 className="text-sm font-semibold mb-2 text-gray-900">{principle.title}</h3>
+                      <p className="text-gray-600 leading-relaxed text-xs text-justify" style={{ lineHeight: '1.5' }}>
                         {principle.description}
                       </p>
                     </div>
                   ))}
                 </motion.div>
-
-                {/* Feature Image with Statistics */}
-                <motion.div
-                  initial={{ opacity: 0, x: 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  viewport={{ once: true }}
-                  className="flex items-center justify-center gap-6 pt-12"
-                >
-                  {/* Philosophy Image */}
-                  <div className="w-[350px] h-[350px] bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg overflow-hidden">
-                    <img
-                      src={aboutData.philosophy.image.src}
-                      alt={aboutData.philosophy.image.alt}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                    />
-                  </div>
-                  
-                  {/* Statistics */}
+                <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }} viewport={{ once: true }} className="flex items-center justify-center gap-6 pt-2">
+                  <ImageContainer src={aboutData.philosophy.image.src} alt={aboutData.philosophy.image.alt} size="w-[350px] h-[350px]" aspect="" />
                   <div className="flex flex-col space-y-6">
-                    {aboutData.philosophy.statistics.map((stat, index) => (
-                      <div key={index} className="text-center">
-                        <div className="text-3xl font-bold text-gray-900 mb-1">
-                          {stat.value}
-                        </div>
-                        <div className="text-sm text-gray-600 uppercase tracking-wide">
-                          {stat.label}
-                        </div>
+                    {aboutData.philosophy.statistics.map((stat, i) => (
+                      <div key={i} className="text-center">
+                        <div className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</div>
+                        <div className="text-xs text-gray-600 uppercase tracking-wide">{stat.label}</div>
                       </div>
                     ))}
                   </div>
                 </motion.div>
               </div>
             </div>
-          </div>
+          </Section>
 
-          {/* Section 5: Back to Home */}
-          <div className="w-screen h-full flex items-center justify-center bg-gray-50 px-8 py-28">
+          {/* CTA */}
+          <Section>
             <div className="text-center max-w-3xl mx-auto px-10 pt-28 pb-12">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-                className="space-y-6"
-              >
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                  {aboutData.cta.title}
-                </h2>
-                <p
-                  className="text-gray-600 mb-6 max-w-xl mx-auto text-lg leading-relaxed text-justify"
-                  style={{ lineHeight: '1.8' }}
-                >
+              <AnimatedText className="space-y-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-4">{aboutData.cta.title}</h2>
+                <p className="text-gray-600 mb-6 max-w-xl mx-auto text-base leading-relaxed text-justify" style={{ lineHeight: '1.8' }}>
                   {aboutData.cta.description}
                 </p>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={handleBackToHome}
-                  className="bg-gray-900 text-white px-6 py-3 rounded-lg text-base font-medium hover:bg-gray-800 transition-colors shadow-lg"
+                  onClick={() => navigate('/')}
+                  className="bg-gray-900 text-white px-6 py-3 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors shadow-lg"
                 >
                   {aboutData.cta.buttonText}
                 </motion.button>
-              </motion.div>
+              </AnimatedText>
             </div>
-          </div>
+          </Section>
         </motion.div>
       </div>
 
-      {/* Footer */}
       <div className="fixed bottom-0 left-0 w-full z-10">
         <Footer />
       </div>
-
       <WhatsAppButton />
     </div>
   );
