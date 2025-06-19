@@ -1,44 +1,48 @@
-
+import cover from '../assets/images/project1/cover.jpg';
+import cover1 from '../assets/images/project2/cover1.jpg';
+import cover2 from '../assets/images/project3/cover2.jpg';
+import cover4 from '../assets/images/project4/cover4.jpg';
+import cover5 from '../assets/images/project5/cover5.jpg';
 // src/data/projects.js
 export const projects = [
   {
     id: 1,
-    title: "Mountain Retreat",
+    title: "Eco School",
     location: "Austria",
     year: "2024",
-    image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&h=800&fit=crop",
-    description: "A modern mountain retreat with traditional wood construction"
+    image: cover
+    
   },
   {
     id: 2,
     title: "Urban Complex",
     location: "Vienna",
     year: "2023", 
-    image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&h=800&fit=crop",
-    description: "Mixed-use development integrating residential and commercial spaces"
+    image: cover1
+
   },
   {
     id: 3,
     title: "Wellness Center",
     location: "Switzerland",
     year: "2024",
-    image: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1200&h=800&fit=crop",
-    description: "Minimalist spa and wellness facility with natural materials"
+    image: cover2
+
   },
   {
     id: 4,
     title: "Cultural Hub",
     location: "Germany",
     year: "2023",
-    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=800&fit=crop",
-    description: "Community center fostering arts and cultural exchange"
+    image: cover4
+  
   },
   {
     id: 5,
     title: "Forest Chapel",
     location: "Bavaria",
     year: "2024",
-    image: "https://images.unsplash.com/photo-1600047509358-9dc75507daeb?w=1200&h=800&fit=crop",
-    description: "Contemplative space harmonizing with forest surroundings"
+    image: cover5
+   
   }
 ];

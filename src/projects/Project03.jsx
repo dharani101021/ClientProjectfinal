@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import Navigation from '../components/common/Navigation';
 import Footer from '../components/common/Footer';
 import WhatsAppButton from '../components/common/WhatsAppButton';
-import { projects } from '../data/ProjectData3.json';
+import { projects } from '../data/ProjectData3.js';
+
 
 const Project03 = ({ isVisible = true }) => {
   const scrollRef = useRef(null);
@@ -14,9 +15,8 @@ const Project03 = ({ isVisible = true }) => {
 
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsMobile(window.innerWidth < 768); // md breakpoint
+      setIsMobile(window.innerWidth < 768);
     };
-
     checkScreenSize();
     window.addEventListener('resize', checkScreenSize);
     return () => window.removeEventListener('resize', checkScreenSize);
@@ -26,13 +26,11 @@ const Project03 = ({ isVisible = true }) => {
     const handleScroll = () => {
       if (scrollRef.current) {
         if (isMobile) {
-          // Vertical scroll progress
           const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
           const maxScroll = scrollHeight - clientHeight;
           const progress = maxScroll > 0 ? scrollTop / maxScroll : 0;
           setScrollProgress(progress);
         } else {
-          // Horizontal scroll progress
           const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
           const maxScroll = scrollWidth - clientWidth;
           const progress = maxScroll > 0 ? scrollLeft / maxScroll : 0;
@@ -64,9 +62,8 @@ const Project03 = ({ isVisible = true }) => {
 
   return (
     <section className={`fixed inset-0 bg-white transition-transform duration-1000 ${isVisible ? 'translate-x-0' : '-translate-x-full'}`}>
-     <Navigation />
-      {/* Scrolling Images - Responsive Layout */}
-      <div className="absolute inset-0 pt-[130px] md:pt-[168px] lg:pt-[165px] lg:pb-20">
+      <Navigation />
+      <div className="absolute inset-0 pt-[140px] md:pt-[168px] lg:pt-[175px] lg:pb-20">
         <div
           ref={scrollRef}
           className={`
@@ -78,33 +75,25 @@ const Project03 = ({ isVisible = true }) => {
           `}
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          {/* Scroll Indicator - Responsive with Larger Mobile Sizes */}
+          {/* Scroll Indicator */}
           <div className={`
             absolute transform flex items-center gap-1 sm:gap-2 md:gap-3 lg:gap-4 text-black pointer-events-none z-10
             ${isMobile
-              ? 'top-[5px] left-1/2 -translate-x-1/2 flex-col text-center'
+              ? 'top-[15px] left-1/2 -translate-x-1/2 flex-col text-center'
               : 'top-1/2 -translate-y-1/2 left-3 sm:left-4 md:left-6 lg:left-8 xl:left-[calc(25vw-200px)]'
             }
           `}>
             <span className={`font-medium tracking-[0.1em] sm:tracking-[0.15em] ${
               isMobile 
-                ? 'text-sm sm:text-base' // Larger text on mobile
-                : 'text-[10px] sm:text-xs md:text-sm lg:text-base' // Original desktop sizes
+                ? 'text-sm sm:text-base'
+                : 'text-[10px] sm:text-xs md:text-sm lg:text-base'
             }`}>
               SCROLL
             </span>
             {isMobile ? (
               <>
-                <ArrowUp className={`text-black ${
-                  isMobile 
-                    ? 'w-4 h-4 sm:w-5 sm:h-5' // Larger arrow on mobile
-                    : 'w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4' // Original desktop sizes
-                }`} />
-                <div className={`bg-black w-px ${
-                  isMobile 
-                    ? 'h-6 sm:h-8' // Larger line on mobile
-                    : 'h-4 sm:h-6 md:h-8 lg:h-12' // Original desktop sizes
-                }`}></div>
+                <ArrowUp className={`text-black ${isMobile ? 'w-4 h-4 sm:w-5 sm:h-5' : 'w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4'}`} />
+                <div className={`bg-black w-px ${isMobile ? 'h-6 sm:h-8' : 'h-4 sm:h-6 md:h-8 lg:h-12'}`}></div>
               </>
             ) : (
               <>
@@ -117,8 +106,9 @@ const Project03 = ({ isVisible = true }) => {
           {projects.map((project, index) => (
             <div
               key={project.id}
+              onClick={() => navigate(`/project0${index + 1}`)}
               className={`
-                flex-shrink-0 relative group
+                flex-shrink-0 relative group cursor-pointer
                 ${isMobile
                   ? 'w-full max-w-sm h-[250px] sm:h-[280px]' + (index === projects.length - 1 ? ' mb-[50px]' : '')
                   : 'w-[280px] sm:w-[350px] md:w-[450px] lg:w-[500px] xl:w-[580px] h-[200px] sm:h-[250px] md:h-[320px] lg:h-[380px] xl:h-[388px] mt-[5vh]'
@@ -140,11 +130,11 @@ const Project03 = ({ isVisible = true }) => {
             </div>
           ))}
 
-          {/* Spacer for horizontal scroll only */}
+          {/* Spacer for scroll */}
           {!isMobile && <div className="flex-shrink-0 w-48 sm:w-64 md:w-80 lg:w-96" />}
         </div>
       </div>
-      <Footer />
+       <Footer />
       <WhatsAppButton />
     </section>
   );
