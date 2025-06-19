@@ -45,7 +45,7 @@ const About = () => {
   const ImageContainer = ({ src, alt, isMobile = false, isDesktop = false }) => {
     if (isDesktop) {
       return (
-        <div className="w-[350px] h-[350px] bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden">
+        <div className="w-[300px] h-[300px] bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden">
           <img src={src} alt={alt} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
         </div>
       );
@@ -101,7 +101,7 @@ const About = () => {
                 {aboutData.story.title}
               </h2>
             </AnimatedText>
-            <div className="space-y-8">
+            <div className="space-y-4">
               <AnimatedText className="flex justify-center">
                 <ImageContainer src={aboutData.story.image.src} alt={aboutData.story.image.alt} />
               </AnimatedText>
@@ -128,11 +128,11 @@ const About = () => {
         <Section mobile bg="bg-white">
           <div className="max-w-4xl mx-auto">
             <AnimatedText>
-              <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-8 text-center">
+              <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-6 text-center">
                 {aboutData.architect.title}
               </h2>
             </AnimatedText>
-            <div className="space-y-8">
+            <div className="space-y-3">
               <AnimatedText className="flex justify-center">
                 <ImageContainer src={aboutData.architect.image.src} alt={aboutData.architect.image.alt} />
               </AnimatedText>
@@ -241,13 +241,13 @@ const About = () => {
 
           {/* Story */}
           <Section>
-            <div className="w-full max-w-7xl mx-auto pt-28">
+            <div className="w-full max-w-7xl mx-auto pt-20">
               <AnimatedText>
-                <h2 className="text-2xl lg:text-3xl font-bold  text-center  ">{aboutData.story.title}</h2>
+                <h2 className="text-xl lg:text-2xl font-bold text-center mb-4">{aboutData.story.title}</h2>
               </AnimatedText>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center h-full">
-                <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="w-full flex justify-center pt-2">
-                  <ImageContainer src={aboutData.story.image.src} alt={aboutData.story.image.alt} size="w-[350px] h-[350px]" aspect="" />
+                <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="w-full flex justify-center">
+                  <ImageContainer src={aboutData.story.image.src} alt={aboutData.story.image.alt} isDesktop={true} />
                 </motion.div>
                 <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }} viewport={{ once: true }} className="space-y-6">
                   <div className="space-y-4">
@@ -272,13 +272,13 @@ const About = () => {
 
           {/* Architect */}
           <Section>
-            <div className="max-w-7xl mx-auto w-full pt-28">
+            <div className="max-w-7xl mx-auto w-full pt-20">
               <AnimatedText>
-                <h2 className="text-xl lg:text-2xl font-bold text-center">{aboutData.architect.title}</h2>
+                <h2 className="text-xl lg:text-2xl font-bold text-center mb-4">{aboutData.architect.title}</h2>
               </AnimatedText>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center h-full">
-                <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="flex justify-center lg:justify-start pt-2">
-                  <ImageContainer src={aboutData.architect.image.src} alt={aboutData.architect.image.alt} size="w-[350px] h-[350px]" aspect="" />
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-1 items-center h-full">
+                <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="flex justify-center lg:justify-center">
+                  <ImageContainer src={aboutData.architect.image.src} alt={aboutData.architect.image.alt} isDesktop={true} />
                 </motion.div>
                 <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }} viewport={{ once: true }} className="text-center lg:text-left space-y-4">
                   <div>
@@ -299,12 +299,12 @@ const About = () => {
 
           {/* Philosophy */}
           <Section bg="bg-white">
-            <div className="max-w-7xl mx-auto w-full pt-28">
+            <div className="max-w-7xl mx-auto w-full pt-20">
               <AnimatedText>
-                <h2 className="text-xl lg:text-2xl font-bold text-center">{aboutData.philosophy.title}</h2>
+                <h2 className="text-xl lg:text-2xl font-bold text-center mb-4">{aboutData.philosophy.title}</h2>
               </AnimatedText>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="space-y-4 px-10 pt-8 pb-4">
+                <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="space-y-4 px-10">
                   {aboutData.philosophy.principles.map((principle, i) => (
                     <div key={i} className="bg-gray-50 p-4 rounded-lg">
                       <h3 className="text-sm font-semibold mb-2 text-gray-900">{principle.title}</h3>
@@ -314,8 +314,8 @@ const About = () => {
                     </div>
                   ))}
                 </motion.div>
-                <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }} viewport={{ once: true }} className="flex items-center justify-center gap-6 pt-2">
-                  <ImageContainer src={aboutData.philosophy.image.src} alt={aboutData.philosophy.image.alt} size="w-[350px] h-[350px]" aspect="" />
+                <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }} viewport={{ once: true }} className="flex items-center justify-center gap-6">
+                  <ImageContainer src={aboutData.philosophy.image.src} alt={aboutData.philosophy.image.alt} isDesktop={true} />
                   <div className="flex flex-col space-y-6">
                     {aboutData.philosophy.statistics.map((stat, i) => (
                       <div key={i} className="text-center">
