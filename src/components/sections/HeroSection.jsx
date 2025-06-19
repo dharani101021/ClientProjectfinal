@@ -58,7 +58,7 @@ const HeroSection = ({ isVisible = true }) => {
 
   return (
     <section className={`fixed inset-0 bg-white transition-transform duration-1000 ${isVisible ? 'translate-x-0' : '-translate-x-full'}`}>
-      <div className="absolute inset-0 pt-[130px] md:pt-[168px] lg:pt-[165px] lg:pb-20">
+      <div className="absolute inset-0 pt-[140px] md:pt-[168px] lg:pt-[175px] lg:pb-20">
         <div
           ref={scrollRef}
           className={`

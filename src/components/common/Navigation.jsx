@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import HorizontalMovingText from '../sections/HorizontalMovingText';
-import logo from '@/assets/logo.png';
+import logo from '@/assets/logo.svg';
 
 const fontStyle = { fontFamily: 'BwGradual-Medium' };
 
@@ -25,10 +25,10 @@ const Navigation = () => {
         <div className="hidden md:flex justify-between items-center px-6 lg:px-12 py-4 lg:py-6" style={fontStyle}>
           <div className="flex justify-start items-center" style={{ width: '40%' }}>
             <button onClick={() => navigate('/')} className="ml-[5%] lg:ml-[10%] flex items-center gap-4 cursor-pointer">
-              <img src={logo} alt="Studio Precht" className="h-12 lg:h-18" />
-              <span className="text-lg lg:text-xl tracking-wider text-gray-800">
+              <img src={logo} alt="KOODU ARCHITECTURE" className="h-16 w-40" />
+              {/* <span className="text-lg lg:text-xl tracking-wider text-gray-800">
                 KOODU ARCHITECTURE
-              </span>
+              </span> */}
             </button>
           </div>
           <div className="flex justify-center" style={{ width: '20%' }}>
@@ -56,10 +56,10 @@ const Navigation = () => {
         {/* Mobile Navigation */}
         <div className="md:hidden flex justify-between items-center px-4 py-4" style={fontStyle}>
           <button onClick={() => navigate('/')} className="text-lg flex items-center gap-2 cursor-pointer">
-            <img src={logo} alt="Studio Precht" className="h-8" />
-            <span className="text-sm tracking-wider text-gray-800">
+            <img src={logo} alt="KOODU ARCHITECTURE" className="h-16 w-40" />
+            {/* <span className="text-sm tracking-wider text-gray-800">
               KOODU ARCHITECTURE
-            </span>
+            </span> */}
           </button>
           <button onClick={toggleMobileMenu} className="p-2 cursor-pointer">
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

@@ -71,7 +71,7 @@ const About = () => {
 
   if (isMobile) {
     return (
-      <div className="min-h-screen bg-gray-50 pt-24 pb-24">
+      <div className="min-h-screen bg-gray-50 pt-28 pb-24">
         <Navigation />
         
         {/* Hero */}
