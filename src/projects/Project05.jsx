@@ -63,7 +63,7 @@ const Project05 = ({ isVisible = true }) => {
   return (
     <section className={`fixed inset-0 bg-white transition-transform duration-1000 ${isVisible ? 'translate-x-0' : '-translate-x-full'}`}>
       <Navigation />
-      <div className="absolute inset-0 pt-[140px] md:pt-[168px] lg:pt-[175px] lg:pb-20">
+      <div className="absolute inset-0 pt-[140px] md:pt-[168px] lg:pt-[180px] lg:pb-20">
         <div
           ref={scrollRef}
           className={`
