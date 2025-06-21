@@ -6,7 +6,7 @@ const HorizontalMovingText = ({ showOnlyOnHome = true, isHomePage = true }) => {
   const textContent = "A NEST FOR ARCHITECTURE, IMAGINATION, AND MAKING — KOODU ARCHITECTURE — ";
 
   return (
-    <div className="fixed left-0 w-full overflow-hidden z-20 pointer-events-none border-b border-gray-800 bg-white top-[82px] md:top-[100px] lg:top-[100px] flex items-center justify-center" 
+    <div className="fixed left-0 w-full overflow-hidden z-20 pointer-events-none border-b border-gray-800 bg-white top-[85px] md:top-[100px] lg:top-[100px] flex items-center justify-center" 
          style={{ paddingTop: '18px', paddingBottom: '5px' }}>
       <div className="flex items-center whitespace-nowrap animate-marquee">
         <div 
