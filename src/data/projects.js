@@ -7,25 +7,25 @@ import cover5 from '../assets/images/project5/cover5.jpg';
 export const projects = [
   {
     id: 1,
-    title: "Eco School",
-    location: "Austria",
-    year: "2024",
+    title: "PAN-NAI VEEDU",
+    location: "TAMIL NADU",
+    year: "2025",
     image: cover1
     
   },
   {
     id: 2,
-    title: "Urban Complex",
-    location: "Vienna",
-    year: "2023", 
+    title: "TRADITIONAL JEWELLARY",
+    location: "TAMIL NADU",
+    year: "2025", 
     image: cover2
 
   },
   {
     id: 3,
-    title: "Wellness Center",
-    location: "Switzerland",
-    year: "2024",
+    title: "AN ARTIST STUDIO",
+    location: "TAMIL NADU",
+    year: "2025",
     image: cover3
 
   },
