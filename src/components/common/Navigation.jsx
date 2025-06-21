@@ -35,8 +35,9 @@ const Navigation = () => {
             <button
               onClick={() => navigate('/')}
               className={`text-lg lg:text-xl tracking-wider hover:text-gray-600 transition-colors cursor-pointer ${
-                location.pathname === '/' ? 'text-black font-bold' : 'text-gray-800'
+                location.pathname === '/' ? 'font-bold' : 'text-gray-800'
               }`}
+              style={location.pathname === '/' ? { color: '#58351c' } : {}}
             >
               PROJECTS 01-05
             </button>
@@ -44,9 +45,10 @@ const Navigation = () => {
           <div className="flex justify-end" style={{ width: '40%' }}>
             <button
               onClick={() => navigate('/about')}
-              className={`text-lg lg:text-xl tracking-wider hover:text-gray-600 transition-colors mr-[5%] lg:mr-[10%] cursor-pointer ${
-                location.pathname === '/about' ? 'text-black font-bold' : 'text-gray-800'
+              className={`text-lg lg:text-xl tracking-wider hover:text-gray-600 transition-colors mr-[5%] lg:mr-[20%] cursor-pointer ${
+                location.pathname === '/about' ? 'font-bold' : 'text-gray-800'
               }`}
+              style={location.pathname === '/about' ? { color: '#58351c' } : {}}
             >
               ABOUT
             </button>
@@ -73,24 +75,27 @@ const Navigation = () => {
               <button
                 onClick={() => handleNavigation('/')}
                 className={`px-6 py-4 text-lg tracking-wider text-left hover:bg-gray-50 transition-colors cursor-pointer ${
-                  location.pathname === '/' ? 'text-black bg-gray-50 font-bold' : 'text-gray-800'
+                  location.pathname === '/' ? 'bg-gray-50 font-bold' : 'text-gray-800'
                 }`}
+                style={location.pathname === '/' ? { color: '#58351c' } : {}}
               >
                 PROJECTS 01-05
               </button>
               <button
                 onClick={() => handleNavigation('/about')}
                 className={`px-6 py-4 text-lg tracking-wider text-left hover:bg-gray-50 transition-colors cursor-pointer ${
-                  location.pathname === '/about' ? 'text-black bg-gray-50 font-bold' : 'text-gray-800'
+                  location.pathname === '/about' ? 'bg-gray-50 font-bold' : 'text-gray-800'
                 }`}
+                style={location.pathname === '/about' ? { color: '#58351c' } : {}}
               >
                 ABOUT
               </button>
               <button
                 onClick={() => handleNavigation('/contact')}
                 className={`px-6 py-4 text-lg tracking-wider text-left hover:bg-gray-50 transition-colors cursor-pointer ${
-                  location.pathname === '/contact' ? 'text-black bg-gray-50 font-bold' : 'text-gray-800'
+                  location.pathname === '/contact' ? 'bg-gray-50 font-bold' : 'text-gray-800'
                 }`}
+                style={location.pathname === '/contact' ? { color: '#58351c' } : {}}
               >
                 CONTACT
               </button>

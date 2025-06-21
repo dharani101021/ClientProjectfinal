@@ -6,7 +6,7 @@ import Navigation from '../components/common/Navigation';
 import HeroSection from '../components/sections/HeroSection';
 // import ProjectsSection from '../components/sections/ProjectsSection';
 import Footer from '../components/common/Footer';
-import WhatsAppButton from '../components/common/WhatsAppButton';
+// import WhatsAppButton from '../components/common/WhatsAppButton';
 
 const Home = () => {
   const [currentSection, setCurrentSection] = useState('hero');
@@ -35,7 +35,6 @@ const Home = () => {
       <main className="relative w-full h-screen overflow-hidden ">
         <div className="flex h-full">
           <HeroSection isVisible={currentSection === 'hero'} />
-          {/* <ProjectsSection isVisible={currentSection === 'projects'} /> */}
         </div>
       </main>
 
@@ -51,7 +50,7 @@ const Home = () => {
       )}
 
       <Footer />
-      <WhatsAppButton />
+      {/* <WhatsAppButton /> */}
     </div>
   );
 };

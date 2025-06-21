@@ -1,6 +1,6 @@
 import React from 'react';
 import Navigation from '../components/common/Navigation';
-import WhatsAppButton from '../components/common/WhatsAppButton';
+// import WhatsAppButton from '../components/common/WhatsAppButton';
 import Footer from '../components/common/Footer';
 import { output } from 'framer-motion/client';
 
@@ -12,7 +12,7 @@ const Contact = () => {
       
       <main className="min-h-screen flex items-center  justify-center px-4 sm:px-6 lg:px-8 text-gray-900 pt-28 sm:pt-20 lg:pt-24 lg:pb-28 sm:pb-24 pb-16">
         <div className="max-w-7xl w-full">
-          <div className="text-center sm:mb-12 lg:mb-16 pt-12">
+          <div className="text-center sm:mb-12 lg:mb-16 mt-12">
             
           </div>
 
@@ -24,13 +24,16 @@ const Contact = () => {
                   <div>
                     <h2 className="text-sm sm:text-base lg:text-lg font-semibold tracking-wide mb-4 sm:mb-6">EMAIL</h2>
                     <a href="mailto:hello@precht.at" className="hover:text-gray-900 transition-colors break-all block">
-                      hello@koodu.at
+                      kooduarchitecture@gmail.com
                     </a>
                   </div>
                   <div>
                     <h2 className="text-sm sm:text-base lg:text-lg font-semibold tracking-wide mb-4 sm:mb-6">PHONE</h2>
-                    <a href="tel:+4312345678" className="hover:text-gray-900 transition-colors block">
-                      +43 1 234 5678
+                    <a href="tel:+919940788844" className="hover:text-gray-900 transition-colors block">
+                      +91 9940788844
+                    </a>
+                    <a href="tel:+919629298337" className="hover:text-gray-900 transition-colors block">
+                      +91 9629298337
                     </a>
                   </div>
                 </div>
@@ -40,11 +43,13 @@ const Contact = () => {
                 <h2 className="text-sm sm:text-base lg:text-lg font-semibold tracking-wide mb-4 sm:mb-6">LOCATION</h2>
                 <div className="space-y-6 sm:space-y-8">
                   <div>
-                    <p className="text-gray-900 text-xs sm:text-xs tracking-wider mb-3">SALZBURG OFFICE</p>
+                    
                     <p className="text-sm sm:text-base lg:text-lg leading-relaxed pb-6">
-                      Getreidegasse 15<br/>
-                      5020 Salzburg<br/>
-                      Austria
+                      Chennai<br/>
+                      Coimbatore<br/>
+                      Koodu Office@ <br/>
+                      No-1 Kasukkara street,<br/>
+                      Mayiladuthurai - 609001
                     </p>
                   </div>
                 </div>
@@ -123,7 +128,7 @@ const Contact = () => {
 
       
       <Footer/>
-      <WhatsAppButton />
+      {/* <WhatsAppButton /> */}
     </div>
   );
 };

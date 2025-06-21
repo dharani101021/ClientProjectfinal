@@ -58,13 +58,13 @@ const HeroSection = ({ isVisible = true }) => {
 
   return (
     <section className={`fixed inset-0 bg-white transition-transform duration-1000 ${isVisible ? 'translate-x-0' : '-translate-x-full'}`}>
-      <div className="absolute inset-0 pt-[140px] md:pt-[168px] lg:pt-[180px] lg:pb-20">
+      <div className="absolute inset-0 pt-12">
         <div
           ref={scrollRef}
           className={`
             h-full scrollbar-hide relative
             ${isMobile
-              ? 'flex flex-col overflow-y-auto overflow-x-hidden items-center px-4 gap-6 pb-[40px] pt-24'
+              ? 'flex flex-col overflow-y-auto overflow-x-hidden items-center px-4 gap-6 pb-[40px] pt-[180px]'
               : 'flex overflow-x-auto overflow-y-hidden items-center'
             }
           `}
@@ -74,7 +74,7 @@ const HeroSection = ({ isVisible = true }) => {
           <div className={`
             absolute transform flex items-center gap-1 sm:gap-2 md:gap-3 lg:gap-4 text-black pointer-events-none z-10
             ${isMobile
-              ? 'top-[15px] left-1/2 -translate-x-1/2 flex-col text-center'
+              ? 'top-[95px] left-1/2 -translate-x-1/2 flex-col text-center'
               : 'top-1/2 -translate-y-1/2 left-3 sm:left-4 md:left-6 lg:left-8 xl:left-[calc(25vw-200px)]'
             }
           `}>
@@ -105,8 +105,8 @@ const HeroSection = ({ isVisible = true }) => {
               className={`
                 flex-shrink-0 relative group cursor-pointer
                 ${isMobile
-                  ? 'w-full max-w-sm h-[250px] sm:h-[280px]' + (index === projects.length - 1 ? ' mb-[50px]' : '')
-                  : 'w-[280px] sm:w-[350px] md:w-[450px] lg:w-[500px] xl:w-[580px] h-[200px] sm:h-[250px] md:h-[320px] lg:h-[380px] xl:h-[388px] mt-[5vh]'
+                  ? 'w-full max-w-md h-[284px] sm:h-[318px]' + (index === projects.length - 1 ? ' mb-[50px]' : '')
+                  : 'w-[318px] sm:w-[398px] md:w-[511px] lg:w-[567px] xl:w-[658px] h-[227px] sm:h-[284px] md:h-[363px] lg:h-[431px] xl:h-[439px] mt-[5vh]'
                 }
               `}
               style={!isMobile ? {
@@ -119,7 +119,7 @@ const HeroSection = ({ isVisible = true }) => {
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 pb-20px"
+                  className="w-full h-full object-cover scale-100 transition-transform duration-700 group-hover:scale-105"
                 />
                 
                 {/* Plus Icon */}
