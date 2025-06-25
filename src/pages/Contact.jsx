@@ -1,5 +1,6 @@
 import React from 'react';
 import Navigation from '../components/common/Navigation';
+import HorizontalMovingText from '../components/sections/HorizontalMovingText';
 // import WhatsAppButton from '../components/common/WhatsAppButton';
 import Footer from '../components/common/Footer';
 import { output } from 'framer-motion/client';
@@ -9,6 +10,7 @@ const Contact = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       <Navigation />
+      <HorizontalMovingText />
       
       <main className="min-h-screen flex items-center  justify-center px-4 sm:px-6 lg:px-8 text-gray-900 pt-28 sm:pt-20 lg:pt-24 lg:pb-28 sm:pb-24 pb-16">
         <div className="max-w-7xl w-full">

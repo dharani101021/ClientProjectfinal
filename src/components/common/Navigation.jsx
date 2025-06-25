@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
-import HorizontalMovingText from '../sections/HorizontalMovingText';
+// import HorizontalMovingText from '../sections/HorizontalMovingText';
 import logo from '@/assets/logo.svg';
 
 const fontStyle = { fontFamily: 'BwGradual-Medium' };
@@ -105,7 +105,7 @@ const Navigation = () => {
       </nav>
 
       {/* Moving Text Under Navigation */}
-      <HorizontalMovingText />
+      {/* <HorizontalMovingText /> */}
     </>
   );
 };

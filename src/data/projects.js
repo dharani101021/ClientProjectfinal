@@ -7,7 +7,7 @@ import cover5 from '../assets/images/project5/cover5.jpg';
 export const projects = [
   {
     id: 1,
-    title: "PAN-NAI VEEDU",
+    title: "PANAI VEEDU",
     location: "TAMIL NADU",
     year: "2025",
     image: cover1

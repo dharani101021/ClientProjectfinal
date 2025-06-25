@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { ArrowLeft, ArrowUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '../components/common/Navigation';
+import Project04Text from '../components/sections/Project04Text';
 import Footer from '../components/common/Footer';
 // import WhatsAppButton from '../components/common/WhatsAppButton';
 import { projects } from '../data/ProjectData4.js';
@@ -66,6 +67,7 @@ const Project04 = ({ isVisible = true }) => {
   return (
     <section className={`fixed inset-0 bg-white transition-transform duration-1000 ${isVisible ? 'translate-x-0' : '-translate-x-full'}`}>
       <Navigation/>
+      <Project04Text/>
 
       <div className="absolute inset-0 pt-12">
         <div
@@ -110,9 +112,8 @@ const Project04 = ({ isVisible = true }) => {
           {projects.map((project, index) => (
             <div
               key={project.id}
-              onClick={() => navigate(`/project0${index + 1}`)}
               className={`
-                flex-shrink-0 relative group cursor-pointer
+                flex-shrink-0 relative group
                 ${isMobile
                   ? 'w-full max-w-md h-[284px] sm:h-[318px]' + (index === projects.length - 1 ? ' mb-[50px]' : '')
                   : 'w-[318px] sm:w-[398px] md:w-[511px] lg:w-[567px] xl:w-[658px] h-[227px] sm:h-[284px] md:h-[363px] lg:h-[431px] xl:h-[439px] mt-[5vh]'

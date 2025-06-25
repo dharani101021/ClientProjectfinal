@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
 
 import Navigation from '../components/common/Navigation';
+import HorizontalMovingText from '../components/sections/HorizontalMovingText';
 import HeroSection from '../components/sections/HeroSection';
 // import ProjectsSection from '../components/sections/ProjectsSection';
 import Footer from '../components/common/Footer';
@@ -31,6 +32,8 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-white overflow-hidden ">
       <Navigation />
+      <HorizontalMovingText />
+    
 
       <main className="relative w-full h-screen overflow-hidden ">
         <div className="flex h-full">

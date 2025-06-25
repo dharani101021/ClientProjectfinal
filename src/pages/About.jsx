@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Navigation from '../components/common/Navigation';
+import HorizontalMovingText from '../components/sections/HorizontalMovingText';
 // import WhatsAppButton from '../components/common/WhatsAppButton';
 import Footer from '../components/common/Footer';
 import aboutData from '../data/aboutData.js';
@@ -139,6 +140,7 @@ const About = () => {
     return (
       <div className="min-h-screen pt-28 pb-24">
         <Navigation />
+        <HorizontalMovingText />
         
         {/* Hero */}
         <Section mobile>
@@ -297,6 +299,7 @@ const About = () => {
   return (
     <div className="min-h-screen">
       <Navigation />
+      <HorizontalMovingText />
       {/* Updated width to 700vw for 7 sections */}
       <div className="fixed left-0 w-full overflow-hidden" style={{ top: '80px', height: 'calc(100vh - 160px)' }}>
         <motion.div ref={containerRef} style={{ x }} className="flex h-full w-[700vw] overflow-hidden gap-0">
