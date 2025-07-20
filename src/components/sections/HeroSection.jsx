@@ -7,6 +7,7 @@ const HeroSection = ({ isVisible = true }) => {
   const scrollRef = useRef(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [centerIndex, setCenterIndex] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,6 +19,57 @@ const HeroSection = ({ isVisible = true }) => {
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
+  // Keyboard navigation effect
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!isVisible) return;
+      
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        navigateToProject(Math.min(centerIndex + 1, projects.length - 1));
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        navigateToProject(Math.max(centerIndex - 1, 0));
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isVisible, centerIndex]);
+
+  // Function to navigate to a specific project
+  const navigateToProject = (targetIndex) => {
+    if (targetIndex < 0 || targetIndex >= projects.length || targetIndex === centerIndex) {
+      return;
+    }
+
+    setCenterIndex(targetIndex);
+    
+    if (scrollRef.current) {
+      if (isMobile) {
+        // For mobile, scroll vertically
+        const containerHeight = scrollRef.current.clientHeight;
+        const totalScrollHeight = scrollRef.current.scrollHeight - containerHeight;
+        const targetScrollTop = (targetIndex / (projects.length - 1)) * totalScrollHeight;
+        
+        scrollRef.current.scrollTo({
+          top: targetScrollTop,
+          behavior: 'smooth'
+        });
+      } else {
+        // For desktop, scroll horizontally
+        const containerWidth = scrollRef.current.clientWidth;
+        const totalScrollWidth = scrollRef.current.scrollWidth - containerWidth;
+        const targetScrollLeft = (targetIndex / (projects.length - 1)) * totalScrollWidth;
+        
+        scrollRef.current.scrollTo({
+          left: targetScrollLeft,
+          behavior: 'smooth'
+        });
+      }
+    }
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       if (scrollRef.current) {
@@ -26,11 +78,21 @@ const HeroSection = ({ isVisible = true }) => {
           const maxScroll = scrollHeight - clientHeight;
           const progress = maxScroll > 0 ? scrollTop / maxScroll : 0;
           setScrollProgress(progress);
+          
+          // Simple calculation based on scroll percentage
+          const scrollPercentage = progress;
+          const newCenterIndex = Math.round(scrollPercentage * (projects.length - 1));
+          setCenterIndex(Math.max(0, Math.min(projects.length - 1, newCenterIndex)));
         } else {
           const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
           const maxScroll = scrollWidth - clientWidth;
           const progress = maxScroll > 0 ? scrollLeft / maxScroll : 0;
           setScrollProgress(progress);
+          
+          // Simple calculation based on scroll percentage
+          const scrollPercentage = progress;
+          const newCenterIndex = Math.round(scrollPercentage * (projects.length - 1));
+          setCenterIndex(Math.max(0, Math.min(projects.length - 1, newCenterIndex)));
         }
       }
     };
@@ -38,6 +100,8 @@ const HeroSection = ({ isVisible = true }) => {
     const scrollElement = scrollRef.current;
     if (scrollElement) {
       scrollElement.addEventListener('scroll', handleScroll);
+      // Use setTimeout to ensure DOM is ready
+      setTimeout(() => handleScroll(), 100);
       return () => scrollElement.removeEventListener('scroll', handleScroll);
     }
   }, [isMobile]);
@@ -56,6 +120,29 @@ const HeroSection = ({ isVisible = true }) => {
     }
   }, [isVisible, isMobile]);
 
+  const getImageScale = (index) => {
+    return 'scale-100'; // All images keep their natural scale
+  };
+
+  const getImageOpacity = (index) => {
+    if (index === centerIndex) {
+      return 'opacity-100'; // Full opacity for center image
+    }
+    return 'opacity-70'; // Slightly reduced opacity for non-center images
+  };
+
+  const getContainerSize = (index) => {
+    if (isMobile) {
+      return index === centerIndex 
+        ? 'w-full max-w-md h-[284px] sm:h-[318px]' // Original mobile size
+        : 'w-full max-w-sm h-[220px] sm:h-[250px]'; // Smaller for non-center
+    } else {
+      return index === centerIndex
+        ? 'w-[318px] sm:w-[398px] md:w-[511px] lg:w-[567px] xl:w-[658px] h-[227px] sm:h-[284px] md:h-[363px] lg:h-[431px] xl:h-[439px]' // Original desktop size
+        : 'w-[250px] sm:w-[318px] md:w-[400px] lg:w-[450px] xl:w-[520px] h-[180px] sm:h-[227px] md:h-[290px] lg:h-[340px] xl:h-[350px]'; // Smaller for non-center
+    }
+  };
+
   return (
     <section className={`fixed inset-0 bg-white transition-transform duration-1000 ${isVisible ? 'translate-x-0' : '-translate-x-full'}`}>
       <div className="absolute inset-0 pt-12">
@@ -64,8 +151,8 @@ const HeroSection = ({ isVisible = true }) => {
           className={`
             h-full scrollbar-hide relative
             ${isMobile
-              ? 'flex flex-col overflow-y-auto overflow-x-hidden items-center px-4 gap-6 pb-[40px] pt-[180px]'
-              : 'flex overflow-x-auto overflow-y-hidden items-center'
+              ? 'flex flex-col overflow-y-auto overflow-x-hidden items-center px-4 gap-8 pb-[40px] pt-[180px]'
+              : 'flex overflow-x-auto overflow-y-hidden items-center gap-8'
             }
           `}
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
@@ -101,49 +188,53 @@ const HeroSection = ({ isVisible = true }) => {
           {projects.map((project, index) => (
             <div
               key={project.id}
+              data-project-item="true"
               onClick={() => navigate(`/project0${index + 1}`)}
               className={`
-                flex-shrink-0 relative group cursor-pointer
-                ${isMobile
-                  ? 'w-full max-w-md h-[284px] sm:h-[318px]' + (index === projects.length - 1 ? ' mb-[50px]' : '')
-                  : 'w-[318px] sm:w-[398px] md:w-[511px] lg:w-[567px] xl:w-[658px] h-[227px] sm:h-[284px] md:h-[363px] lg:h-[431px] xl:h-[439px] mt-[5vh]'
-                }
+                flex-shrink-0 relative group cursor-pointer transition-all duration-700 ease-in-out
+                ${getContainerSize(index)}
+                ${index === centerIndex ? 'z-10' : 'z-0'}
+                ${isMobile ? '' : 'mt-[5vh]'}
               `}
-              style={!isMobile ? {
-                marginLeft: index === 0
-                  ? 'clamp(10vw, 25vw, 25vw)'
-                  : 'clamp(1rem, 2rem, 2rem)'
+              style={!isMobile && index === 0 ? {
+                marginLeft: 'clamp(10vw, 25vw, 25vw)'
               } : {}}
             >
-              <div className="h-full relative overflow-hidden rounded-none md:rounded-none">
+              <div className={`h-full relative overflow-hidden rounded-none md:rounded-none transition-all duration-700 ${getImageOpacity(index)}`}>
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-full object-cover scale-100 transition-transform duration-700 group-hover:scale-105"
+                  className={`w-full h-full object-cover transition-all duration-700 group-hover:scale-105 ${getImageScale(index)}`}
                 />
                 
-                {/* Plus Icon */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-black rounded-full flex items-center justify-center transform scale-75 group-hover:scale-100 transition-transform duration-500">
-                    <Plus className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
+                {/* Plus Icon - only show on center image hover */}
+                {index === centerIndex && (
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-black rounded-full flex items-center justify-center transform scale-75 group-hover:scale-100 transition-transform duration-500">
+                      <Plus className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
+                    </div>
                   </div>
-                </div>
+                )}
 
-                {/* Overlay Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                {/* Overlay Gradient - only show on center image hover */}
+                {index === centerIndex && (
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                )}
 
-                {/* Text Info with Transition */}
-                <div className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-4 sm:left-6 md:left-8 right-4 sm:right-6 md:right-8 text-white opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-700 ease-in-out">
-                  <h3 className="text-lg sm:text-xl md:text-2xl font-medium mb-1 sm:mb-2 tracking-wide">
-                    {project.title}
-                  </h3>
-                  <p className="text-sm sm:text-base md:text-lg text-gray-200 mb-1 tracking-wide">
-                    {project.location}
-                  </p>
-                  <p className="text-xs sm:text-sm text-gray-300 tracking-wide">
-                    {project.year}
-                  </p>
-                </div>
+                {/* Text Info with Transition - only show on center image */}
+                {index === centerIndex && (
+                  <div className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-4 sm:left-6 md:left-8 right-4 sm:right-6 md:right-8 text-white opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-700 ease-in-out">
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-medium mb-1 sm:mb-2 tracking-wide">
+                      {project.title}
+                    </h3>
+                    <p className="text-sm sm:text-base md:text-lg text-gray-200 mb-1 tracking-wide">
+                      {project.location}
+                    </p>
+                    <p className="text-xs sm:text-sm text-gray-300 tracking-wide">
+                      {project.year}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           ))}

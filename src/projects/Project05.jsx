@@ -6,11 +6,13 @@ import Project05Text from '../components/sections/Project05Text';
 import Footer from '../components/common/Footer';
 // import WhatsAppButton from '../components/common/WhatsAppButton';
 import { projects } from '../data/ProjectData5.js';
+import { projects as project01Data } from '../data/ProjectData1.js'; // Import Project01 data
 
 const Project05 = ({ isVisible = true }) => {
   const scrollRef = useRef(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [centerIndex, setCenterIndex] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,19 +24,86 @@ const Project05 = ({ isVisible = true }) => {
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
+  // Keyboard navigation effect
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!isVisible) return;
+      
+      const totalItems = projects.length + 2; // projects + NEXT + project01 preview
+      
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        navigateToItem(Math.min(centerIndex + 1, totalItems - 1));
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        navigateToItem(Math.max(centerIndex - 1, 0));
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isVisible, centerIndex]);
+
+  // Function to navigate to a specific item
+  const navigateToItem = (targetIndex) => {
+    const totalItems = projects.length + 2; // projects + NEXT + project01 preview
+    
+    if (targetIndex < 0 || targetIndex >= totalItems || targetIndex === centerIndex) {
+      return;
+    }
+
+    setCenterIndex(targetIndex);
+    
+    if (scrollRef.current) {
+      if (isMobile) {
+        // For mobile, scroll vertically
+        const containerHeight = scrollRef.current.clientHeight;
+        const totalScrollHeight = scrollRef.current.scrollHeight - containerHeight;
+        const targetScrollTop = (targetIndex / (totalItems - 1)) * totalScrollHeight;
+        
+        scrollRef.current.scrollTo({
+          top: targetScrollTop,
+          behavior: 'smooth'
+        });
+      } else {
+        // For desktop, scroll horizontally
+        const containerWidth = scrollRef.current.clientWidth;
+        const totalScrollWidth = scrollRef.current.scrollWidth - containerWidth;
+        const targetScrollLeft = (targetIndex / (totalItems - 1)) * totalScrollWidth;
+        
+        scrollRef.current.scrollTo({
+          left: targetScrollLeft,
+          behavior: 'smooth'
+        });
+      }
+    }
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       if (scrollRef.current) {
+        const totalItems = projects.length + 2; // projects + NEXT + project01 preview
+        
         if (isMobile) {
           const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
           const maxScroll = scrollHeight - clientHeight;
           const progress = maxScroll > 0 ? scrollTop / maxScroll : 0;
           setScrollProgress(progress);
+          
+          // Simple calculation based on scroll percentage
+          const scrollPercentage = progress;
+          const newCenterIndex = Math.round(scrollPercentage * (totalItems - 1));
+          setCenterIndex(Math.max(0, Math.min(totalItems - 1, newCenterIndex)));
         } else {
           const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
           const maxScroll = scrollWidth - clientWidth;
           const progress = maxScroll > 0 ? scrollLeft / maxScroll : 0;
           setScrollProgress(progress);
+          
+          // Simple calculation based on scroll percentage
+          const scrollPercentage = progress;
+          const newCenterIndex = Math.round(scrollPercentage * (totalItems - 1));
+          setCenterIndex(Math.max(0, Math.min(totalItems - 1, newCenterIndex)));
         }
       }
     };
@@ -42,6 +111,8 @@ const Project05 = ({ isVisible = true }) => {
     const scrollElement = scrollRef.current;
     if (scrollElement) {
       scrollElement.addEventListener('scroll', handleScroll);
+      // Use setTimeout to ensure DOM is ready
+      setTimeout(() => handleScroll(), 100);
       return () => scrollElement.removeEventListener('scroll', handleScroll);
     }
   }, [isMobile]);
@@ -59,6 +130,25 @@ const Project05 = ({ isVisible = true }) => {
       return () => window.removeEventListener('wheel', handleWheel);
     }
   }, [isVisible, isMobile]);
+
+  const getImageOpacity = (index) => {
+    if (index === centerIndex) {
+      return 'opacity-100'; // Full opacity for center image
+    }
+    return 'opacity-70'; // Slightly reduced opacity for non-center images
+  };
+
+  const getContainerSize = (index) => {
+    if (isMobile) {
+      return index === centerIndex 
+        ? 'w-full max-w-md h-[284px] sm:h-[318px]' // Original mobile size
+        : 'w-full max-w-sm h-[220px] sm:h-[250px]'; // Smaller for non-center
+    } else {
+      return index === centerIndex
+        ? 'w-[318px] sm:w-[398px] md:w-[511px] lg:w-[567px] xl:w-[658px] h-[227px] sm:h-[284px] md:h-[363px] lg:h-[431px] xl:h-[439px]' // Original desktop size
+        : 'w-[250px] sm:w-[318px] md:w-[400px] lg:w-[450px] xl:w-[520px] h-[180px] sm:h-[227px] md:h-[290px] lg:h-[340px] xl:h-[350px]'; // Smaller for non-center
+    }
+  };
 
   const handleNextClick = () => {
     navigate('/project01');
@@ -113,11 +203,11 @@ const Project05 = ({ isVisible = true }) => {
             <div
               key={project.id}
               className={`
-                flex-shrink-0 relative group
-                ${isMobile
-                  ? 'w-full max-w-md h-[284px] sm:h-[318px]' + (index === projects.length - 1 ? ' mb-[50px]' : '')
-                  : 'w-[318px] sm:w-[398px] md:w-[511px] lg:w-[567px] xl:w-[658px] h-[227px] sm:h-[284px] md:h-[363px] lg:h-[431px] xl:h-[439px] mt-[5vh]'
-                }
+                flex-shrink-0 relative group transition-all duration-700 ease-in-out
+                ${getContainerSize(index)}
+                ${index === centerIndex ? 'z-10' : 'z-0'}
+                ${isMobile ? '' : 'mt-[5vh]'}
+                ${isMobile && index === projects.length - 1 ? 'mb-[50px]' : ''}
               `}
               style={!isMobile ? {
                 marginLeft: index === 0
@@ -125,7 +215,7 @@ const Project05 = ({ isVisible = true }) => {
                   : 'clamp(1rem, 2rem, 2rem)'
               } : {}}
             >
-              <div className="h-full relative overflow-hidden rounded-none md:rounded-none">
+              <div className={`h-full relative overflow-hidden rounded-none md:rounded-none transition-all duration-700 ${getImageOpacity(index)}`}>
                 <img
                   src={project.image}
                   alt={project.title}
@@ -139,22 +229,48 @@ const Project05 = ({ isVisible = true }) => {
           <div
             onClick={handleNextClick}
             className={`
-              flex-shrink-0 relative group cursor-pointer flex items-center justify-center
-              ${isMobile
-                ? 'w-full max-w-md h-[284px] sm:h-[318px] mb-[50px]'
-                : 'w-[318px] sm:w-[398px] md:w-[511px] lg:w-[567px] xl:w-[658px] h-[227px] sm:h-[284px] md:h-[363px] lg:h-[431px] xl:h-[439px] mt-[5vh]'
-              }
+              flex-shrink-0 relative group cursor-pointer flex items-center justify-center transition-all duration-700 ease-in-out
+              ${getContainerSize(projects.length)}
+              ${projects.length === centerIndex ? 'z-10' : 'z-0'}
+              ${isMobile ? '' : 'mt-[5vh]'}
+              ${isMobile ? 'mb-[50px]' : ''}
             `}
             style={!isMobile ? {
               marginLeft: 'clamp(1rem, 2rem, 2rem)'
             } : {}}
           >
-            <div className="h-full w-full relative flex items-center justify-center  text-black transition-colors duration-300">
+            <div className={`h-full w-full relative flex items-center justify-center text-black transition-all duration-700 ${getImageOpacity(projects.length)}`}>
               <span className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-wider">
                 NEXT
               </span>
             </div>
           </div>
+
+          {/* First image from Project01 - appears after NEXT text */}
+          {project01Data.length > 0 && (
+            <div
+              key={`project01-preview-${project01Data[0].id}`}
+              className={`
+                flex-shrink-0 relative group cursor-pointer transition-all duration-700 ease-in-out
+                ${getContainerSize(projects.length + 1)}
+                ${projects.length + 1 === centerIndex ? 'z-10' : 'z-0'}
+                ${isMobile ? '' : 'mt-[5vh]'}
+                ${isMobile ? 'mb-[50px]' : ''}
+              `}
+              style={!isMobile ? {
+                marginLeft: 'clamp(1rem, 2rem, 2rem)'
+              } : {}}
+              onClick={handleNextClick}
+            >
+              <div className={`h-full relative overflow-hidden rounded-none md:rounded-none transition-all duration-700 ${getImageOpacity(projects.length + 1)}`}>
+                <img
+                  src={project01Data[0].image}
+                  alt={project01Data[0].title}
+                  className="w-full h-full object-cover scale-100 transition-transform duration-700 group-hover:scale-105"
+                />
+              </div>
+            </div>
+          )}
 
           {/* Spacer for scroll */}
           {!isMobile && <div className="flex-shrink-0 w-48 sm:w-64 md:w-80 lg:w-96" />}
