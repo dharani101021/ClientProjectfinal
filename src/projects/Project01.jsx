@@ -294,47 +294,40 @@ const Project01 = ({ isVisible = true }) => {
               </div>
             )}
             
-            {/* Mobile Layout */}
+            {/* Mobile Layout - Only Scroll Indicator */}
             {isMobile && (
-              <>
-                <div className="max-w-xs px-4 mb-6">
-                  <p className="text-sm text-black leading-relaxed font-light text-center">
-                    Chennai, India
-                  </p>
-                  <p className="text-sm text-black leading-relaxed font-light mt-3 text-center">
-                    Completed in 2022
-                  </p>
-                  <p className="text-sm text-black leading-relaxed font-light mt-3 text-center">
-                    Built-Up Area: 3850sqft
-                  </p>
-                  <p className="text-sm text-black leading-relaxed font-light mt-3 text-center">
-                    At the heart of the home lies a central courtyard — a traditional gesture reinterpreted for modern living.
-                  </p>
-                   <p className="text-sm text-black leading-relaxed font-light text-center">
-                    This void introduces natural light and ventilation deep into the home,
+              
+              <div className="flex flex-col items-center gap-1 sm:gap-2 ">
+              <p className="text-gray-600 leading-relaxed text-xs text-justify" style={{ lineHeight: '1.5' }}>
+                      Chennai, India
+              </p>
+              <p className="text-gray-600 leading-relaxed text-xs text-justify" style={{ lineHeight: '1.5' }}>
+                      Completed in 2022
+              </p>
+              <p className="text-gray-600 leading-relaxed text-xs text-justify" style={{ lineHeight: '1.5' }}>
+                      Built-Up Area: 3850sqft
+              </p>
+              <p className="text-gray-600 leading-relaxed text-xs text-justify" style={{ lineHeight: '1.5' }}>
+                      At the heart of the home lies a central courtyard — a traditional gesture reinterpreted for
+                    modern living.
+              </p>
+              <p className="text-gray-600 leading-relaxed text-xs text-justify" style={{ lineHeight: '1.5' }}>
+                      This void introduces natural light and ventilation deep into the home,
                     complemented by a lily pond at the entrance that offers a tranquil threshold between the
                     city and the sanctuary within.
-                  </p>
-                   <p className="text-sm text-black leading-relaxed font-light text-center">
-                    Paanai Veedu, translating to "Pot House," is a multi-generational residence nestled in a
-                    dense urban neighborhood of Chennai.
-                  </p>
-                   <p className="text-sm text-black leading-relaxed font-light text-center">
-                    Conceived as a home for three generations —
+              </p>
+              <p className="text-gray-600 leading-relaxed text-xs text-justify" style={{ lineHeight: '1.5' }}>
+                      Conceived as a home for three generations —
                     children, parents, and grandparents — the design is centered around fostering
                     intergenerational harmony through spatial layering, tactile materiality, and climatic
                     responsiveness.
-                  </p>
-                </div>
-                
-                <div className="flex flex-col items-center gap-1 sm:gap-2 ">
-                  <span className="font-medium tracking-[0.1em] sm:tracking-[0.15em] text-sm sm:text-base ">
-                    SCROLL
-                  </span>
-                  <ArrowUp className="text-black w-4 h-4 sm:w-5 sm:h-5" />
-                  <div className="bg-black w-px h-6 sm:h-8"></div>
-                </div>
-              </>
+              </p>
+                <span className="font-medium tracking-[0.1em] sm:tracking-[0.15em] text-sm sm:text-base ">
+                  SCROLL
+                </span>
+                <ArrowUp className="text-black w-4 h-4 sm:w-5 sm:h-5" />
+                <div className="bg-black w-px h-6 sm:h-8"></div>
+              </div>
             )}
           </div>
 
@@ -384,7 +377,7 @@ const Project01 = ({ isVisible = true }) => {
                     ${item.index === centerIndex ? 'z-10' : 'z-0'}
                     ${isMobile ? '' : 'mt-[5vh]'}
                     ${isMobile && item.projectIndex === projects.length - 1 ? 'mb-[50px]' : ''}
-                    ${isMobile && item.projectIndex === 0 ? 'mt-12' : ''}
+                    ${isMobile && item.projectIndex === 0 ? 'mt-[165px]' : ''}
                   `}
                   style={!isMobile ? {
                     marginLeft: index === 0 && item.type === 'image'
