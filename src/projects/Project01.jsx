@@ -171,30 +171,83 @@ const Project01 = ({ isVisible = true }) => {
           `}
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          {/* Scroll Indicator */}
+          {/* Scroll Indicator with Paragraph */}
           <div className={`
-            absolute transform flex items-center gap-1 sm:gap-2 md:gap-3 lg:gap-4 text-black pointer-events-none z-10
+            absolute transform pointer-events-none z-50
             ${isMobile
-              ? 'top-[95px] left-1/2 -translate-x-1/2 flex-col text-center'
-              : 'top-1/2 -translate-y-1/2 left-3 sm:left-4 md:left-6 lg:left-8 xl:left-[calc(25vw-200px)]'
+              ? 'top-[95px] left-1/2 -translate-x-1/2 flex flex-col items-center text-center'
+              : 'top-1/2 -translate-y-1/2 left-4 sm:left-6 md:left-8 lg:left-12 xl:left-16 flex items-center'
             }
           `}>
-            <span className={`font-medium tracking-[0.1em] sm:tracking-[0.15em] ${
-              isMobile 
-                ? 'text-sm sm:text-base'
-                : 'text-[10px] sm:text-xs md:text-sm lg:text-base'
-            }`}>
-              SCROLL
-            </span>
-            {isMobile ? (
+            {/* Desktop Layout */}
+            {!isMobile && (
+              <div className="flex items-center gap-8 md:gap-12 lg:gap-16 pl-14">
+                {/* Paragraph Section */}
+                <div className="max-w-[280px] lg:max-w-[320px] xl:max-w-[500px] flex flex-col justify-evenly gap-4 ">
+                  <p className="text-xs md:text-sm lg:text-base text-black leading-relaxed font-light ">
+                    Chennai, India
+                  </p>
+                  <p className="text-xs md:text-sm lg:text-base text-black leading-relaxed font-light">
+                    Completed in 2022
+                  </p>
+                  <p className="text-xs md:text-sm lg:text-base text-black leading-relaxed font-light">
+                    Built-Up Area: 3850sqft
+                  </p>
+                  <p className="text-xs md:text-sm lg:text-base text-black leading-relaxed font-light">
+                    At the heart of the home lies a central courtyard — a traditional gesture reinterpreted for
+                    modern living.
+                  </p>
+                  <p className="text-xs md:text-sm lg:text-base text-black leading-relaxed font-light">
+                    This void introduces natural light and ventilation deep into the home,
+                    complemented by a lily pond at the entrance that offers a tranquil threshold between the
+                    city and the sanctuary within.
+                  </p>
+                  <p className="text-xs md:text-sm lg:text-base text-black leading-relaxed font-light">
+                    Paanai Veedu, translating to "Pot House," is a multi-generational residence nestled in a
+                    dense urban neighborhood of Chennai.
+                  </p>
+                  <p className="text-xs md:text-sm lg:text-base text-black leading-relaxed font-light">
+                    Conceived as a home for three generations —
+                    children, parents, and grandparents — the design is centered around fostering
+                    intergenerational harmony through spatial layering, tactile materiality, and climatic
+                    responsiveness.
+                  </p>
+                  
+                  
+                </div>
+                
+                {/* Scroll Indicator */}
+                <div className="flex items-center gap-1 lg:gap-1 text-black ">
+                    <span className="font-light leading-relaxed text-xs md:text-sm lg:text-base ">
+                        SCROLL
+                    </span>
+                  <div className="bg-black w-4 sm:w-6 md:w-8 lg:w-12 h-px "></div>
+                  <ArrowLeft className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 rotate-180 text-black" />
+                </div>
+              </div>
+            )}
+            
+            {/* Mobile Layout */}
+            {isMobile && (
               <>
-                <ArrowUp className={`text-black ${isMobile ? 'w-4 h-4 sm:w-5 sm:h-5' : 'w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4'}`} />
-                <div className={`bg-black w-px ${isMobile ? 'h-6 sm:h-8' : 'h-4 sm:h-6 md:h-8 lg:h-12'}`}></div>
-              </>
-            ) : (
-              <>
-                <div className="bg-black w-4 sm:w-6 md:w-8 lg:w-12 h-px"></div>
-                <ArrowLeft className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 rotate-180 text-black" />
+                <div className="max-w-xs px-4 mb-6">
+                  <p className="text-sm text-black leading-relaxed font-light text-center">
+                    Koodu Architecture was born from a desire to create spaces that feel 
+                    rooted, alive, and limitless in imagination.
+                  </p>
+                  <p className="text-sm text-black leading-relaxed font-light mt-3 text-center">
+                    Founded in Tamil Nadu, Koodu (meaning 'nest' in Tamil) reflects our belief in 
+                    architecture as shelter, community, and creation.
+                  </p>
+                </div>
+                
+                <div className="flex flex-col items-center gap-1 sm:gap-2 ">
+                  <span className="font-medium tracking-[0.1em] sm:tracking-[0.15em] text-sm sm:text-base ">
+                    SCROLL
+                  </span>
+                  <ArrowUp className="text-black w-4 h-4 sm:w-5 sm:h-5" />
+                  <div className="bg-black w-px h-6 sm:h-8"></div>
+                </div>
               </>
             )}
           </div>
@@ -211,7 +264,7 @@ const Project01 = ({ isVisible = true }) => {
               `}
               style={!isMobile ? {
                 marginLeft: index === 0
-                  ? 'clamp(10vw, 25vw, 25vw)'
+                  ? 'clamp(55vw, 50vw, 60vw)' // Increased left margin to make space for paragraph
                   : 'clamp(1rem, 2rem, 2rem)'
               } : {}}
             >

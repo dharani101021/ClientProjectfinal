@@ -1,4 +1,4 @@
-import cover1 from '../assets/images/project1/cover1.jpg';
+import cover1 from '../assets/images/project1//PANNAI VEEDU/cover1.jpg';
 import cover2 from '../assets/images/project2/cover2.jpg';
 import cover3 from '../assets/images/project3/cover3.jpg'
 import cover4 from '../assets/images/project4/cover4.jpg';

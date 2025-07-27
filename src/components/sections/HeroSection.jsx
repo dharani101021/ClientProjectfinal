@@ -1,13 +1,16 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, ArrowLeft, ArrowUp } from 'lucide-react';
-import { projects } from '../../data/projects';
+import { projects } from '../../data/projects'; // Replace with your actual import
 
 const HeroSection = ({ isVisible = true }) => {
   const scrollRef = useRef(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [centerIndex, setCenterIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [transitioningIndex, setTransitioningIndex] = useState(null);
+  const [slideDirection, setSlideDirection] = useState('right'); // 'right' or 'left'
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,7 +25,7 @@ const HeroSection = ({ isVisible = true }) => {
   // Keyboard navigation effect
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (!isVisible) return;
+      if (!isVisible || isTransitioning) return;
       
       if (e.key === 'ArrowRight') {
         e.preventDefault();
@@ -35,11 +38,11 @@ const HeroSection = ({ isVisible = true }) => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isVisible, centerIndex]);
+  }, [isVisible, centerIndex, isTransitioning]);
 
   // Function to navigate to a specific project
   const navigateToProject = (targetIndex) => {
-    if (targetIndex < 0 || targetIndex >= projects.length || targetIndex === centerIndex) {
+    if (targetIndex < 0 || targetIndex >= projects.length || targetIndex === centerIndex || isTransitioning) {
       return;
     }
 
@@ -72,7 +75,7 @@ const HeroSection = ({ isVisible = true }) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (scrollRef.current) {
+      if (scrollRef.current && !isTransitioning) {
         if (isMobile) {
           const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
           const maxScroll = scrollHeight - clientHeight;
@@ -104,11 +107,11 @@ const HeroSection = ({ isVisible = true }) => {
       setTimeout(() => handleScroll(), 100);
       return () => scrollElement.removeEventListener('scroll', handleScroll);
     }
-  }, [isMobile]);
+  }, [isMobile, isTransitioning]);
 
   useEffect(() => {
     const handleWheel = (e) => {
-      if (scrollRef.current && isVisible && !isMobile) {
+      if (scrollRef.current && isVisible && !isMobile && !isTransitioning) {
         e.preventDefault();
         scrollRef.current.scrollLeft += e.deltaY;
       }
@@ -118,29 +121,113 @@ const HeroSection = ({ isVisible = true }) => {
       window.addEventListener('wheel', handleWheel, { passive: false });
       return () => window.removeEventListener('wheel', handleWheel);
     }
-  }, [isVisible, isMobile]);
+  }, [isVisible, isMobile, isTransitioning]);
+
+  const handleProjectClick = (index) => {
+    if (isTransitioning) return;
+    
+    // Determine slide direction based on the next image position
+    const nextIndex = (index + 1) % projects.length;
+    const currentPosition = index;
+    const nextPosition = nextIndex;
+    
+    // Set slide direction
+    if (isMobile) {
+      setSlideDirection(nextPosition > currentPosition ? 'down' : 'up');
+    } else {
+      setSlideDirection(nextPosition > currentPosition ? 'right' : 'left');
+    }
+    
+    setIsTransitioning(true);
+    setTransitioningIndex(index);
+    
+    // Navigate exactly when the slide animation completes (1000ms duration)
+    setTimeout(() => {
+      navigate(`/project0${index + 1}`);
+    }, 1000); // Matches the exact duration of the slide animation
+  };
 
   const getImageScale = (index) => {
-    return 'scale-100'; // All images keep their natural scale
+    if (isTransitioning && transitioningIndex === index) {
+      return 'scale-105'; // Slight scale up during transition
+    }
+    return 'scale-100';
   };
 
   const getImageOpacity = (index) => {
-    if (index === centerIndex) {
-      return 'opacity-100'; // Full opacity for center image
+    if (isTransitioning) {
+      if (transitioningIndex === index) {
+        return 'opacity-100'; // Keep full opacity for sliding image
+      } else {
+        return 'opacity-20'; // Fade out other images more
+      }
     }
-    return 'opacity-70'; // Slightly reduced opacity for non-center images
+    
+    if (index === centerIndex) {
+      return 'opacity-100';
+    }
+    return 'opacity-70';
   };
 
   const getContainerSize = (index) => {
+    if (isTransitioning && transitioningIndex === index) {
+      // Keep original size during slide, don't expand to full screen yet
+      if (isMobile) {
+        return index === centerIndex 
+          ? 'w-full max-w-md h-[284px] sm:h-[318px]'
+          : 'w-full max-w-sm h-[220px] sm:h-[250px]';
+      } else {
+        return index === centerIndex
+          ? 'w-[318px] sm:w-[398px] md:w-[511px] lg:w-[567px] xl:w-[658px] h-[227px] sm:h-[284px] md:h-[363px] lg:h-[431px] xl:h-[439px]'
+          : 'w-[250px] sm:w-[318px] md:w-[400px] lg:w-[450px] xl:w-[520px] h-[180px] sm:h-[227px] md:h-[290px] lg:h-[340px] xl:h-[350px]';
+      }
+    }
+    
     if (isMobile) {
       return index === centerIndex 
-        ? 'w-full max-w-md h-[284px] sm:h-[318px]' // Original mobile size
-        : 'w-full max-w-sm h-[220px] sm:h-[250px]'; // Smaller for non-center
+        ? 'w-full max-w-md h-[284px] sm:h-[318px]'
+        : 'w-full max-w-sm h-[220px] sm:h-[250px]';
     } else {
       return index === centerIndex
-        ? 'w-[318px] sm:w-[398px] md:w-[511px] lg:w-[567px] xl:w-[658px] h-[227px] sm:h-[284px] md:h-[363px] lg:h-[431px] xl:h-[439px]' // Original desktop size
-        : 'w-[250px] sm:w-[318px] md:w-[400px] lg:w-[450px] xl:w-[520px] h-[180px] sm:h-[227px] md:h-[290px] lg:h-[340px] xl:h-[350px]'; // Smaller for non-center
+        ? 'w-[318px] sm:w-[398px] md:w-[511px] lg:w-[567px] xl:w-[658px] h-[227px] sm:h-[284px] md:h-[363px] lg:h-[431px] xl:h-[439px]'
+        : 'w-[250px] sm:w-[318px] md:w-[400px] lg:w-[450px] xl:w-[520px] h-[180px] sm:h-[227px] md:h-[290px] lg:h-[340px] xl:h-[350px]';
     }
+  };
+
+  const getContainerTransform = (index) => {
+    if (isTransitioning && transitioningIndex === index) {
+      if (isMobile) {
+        // For mobile, slide to next position vertically
+        if (slideDirection === 'down') {
+          return 'transform-gpu translate-y-[calc(100vh/2)] scale-110';
+        } else {
+          return 'transform-gpu translate-y-[calc(-100vh/2)] scale-110';
+        }
+      } else {
+        // For desktop, slide to next position horizontally
+        if (slideDirection === 'right') {
+          // Calculate the distance to slide (gap + width of next image)
+          return 'transform-gpu translate-x-[clamp(450px,calc(30vw+350px),1000px)] scale-110';
+        } else {
+          return 'transform-gpu translate-x-[clamp(-450px,calc(-30vw-350px),-1000px)] scale-110';
+        }
+      }
+    }
+    return '';
+  };
+
+  const getTransitionDuration = (index) => {
+    if (isTransitioning && transitioningIndex === index) {
+      return 'duration-1000'; // Longer duration for the sliding image
+    }
+    return 'duration-700';
+  };
+
+  const getBlurEffect = (index) => {
+    if (isTransitioning && transitioningIndex !== index) {
+      return 'blur-sm'; // Add blur to non-transitioning images
+    }
+    return '';
   };
 
   return (
@@ -154,6 +241,7 @@ const HeroSection = ({ isVisible = true }) => {
               ? 'flex flex-col overflow-y-auto overflow-x-hidden items-center px-4 gap-8 pb-[40px] pt-[180px]'
               : 'flex overflow-x-auto overflow-y-hidden items-center gap-8'
             }
+            ${isTransitioning ? 'pointer-events-none' : ''}
           `}
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
@@ -164,6 +252,8 @@ const HeroSection = ({ isVisible = true }) => {
               ? 'top-[95px] left-1/2 -translate-x-1/2 flex-col text-center'
               : 'top-1/2 -translate-y-1/2 left-3 sm:left-4 md:left-6 lg:left-8 xl:left-[calc(25vw-200px)]'
             }
+            ${isTransitioning ? 'opacity-0' : 'opacity-100'}
+            transition-opacity duration-300
           `}>
             <span className={`font-medium tracking-[0.1em] sm:tracking-[0.15em] ${
               isMobile 
@@ -189,26 +279,37 @@ const HeroSection = ({ isVisible = true }) => {
             <div
               key={project.id}
               data-project-item="true"
-              onClick={() => navigate(`/project0${index + 1}`)}
+              onClick={() => handleProjectClick(index)}
               className={`
-                flex-shrink-0 relative group cursor-pointer transition-all duration-700 ease-in-out
+                flex-shrink-0 relative group cursor-pointer transition-all ease-out
                 ${getContainerSize(index)}
+                ${getContainerTransform(index)}
+                ${getTransitionDuration(index)}
                 ${index === centerIndex ? 'z-10' : 'z-0'}
+                ${isTransitioning && transitioningIndex === index ? 'z-50' : ''}
                 ${isMobile ? '' : 'mt-[5vh]'}
+                ${isTransitioning ? 'pointer-events-auto' : ''}
               `}
-              style={!isMobile && index === 0 ? {
+              style={!isMobile && index === 0 && !isTransitioning ? {
                 marginLeft: 'clamp(10vw, 25vw, 25vw)'
               } : {}}
             >
-              <div className={`h-full relative overflow-hidden rounded-none md:rounded-none transition-all duration-700 ${getImageOpacity(index)}`}>
+              <div className={`
+                h-full relative overflow-hidden rounded-none md:rounded-none transition-all
+                ${getImageOpacity(index)} ${getBlurEffect(index)} ${getTransitionDuration(index)}
+              `}>
                 <img
                   src={project.image}
                   alt={project.title}
-                  className={`w-full h-full object-cover transition-all duration-700 group-hover:scale-105 ${getImageScale(index)}`}
+                  className={`
+                    w-full h-full object-cover transition-all ease-out
+                    ${isTransitioning && transitioningIndex === index ? '' : 'group-hover:scale-105'}
+                    ${getImageScale(index)} ${getTransitionDuration(index)}
+                  `}
                 />
                 
-                {/* Plus Icon - only show on center image hover */}
-                {index === centerIndex && (
+                {/* Plus Icon - show on hover (hide during transition) */}
+                {!isTransitioning && (
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                     <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-black rounded-full flex items-center justify-center transform scale-75 group-hover:scale-100 transition-transform duration-500">
                       <Plus className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
@@ -216,33 +317,55 @@ const HeroSection = ({ isVisible = true }) => {
                   </div>
                 )}
 
-                {/* Overlay Gradient - only show on center image hover */}
-                {index === centerIndex && (
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                {/* Overlay Gradient - permanent (hide during transition) */}
+                {!isTransitioning && (
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent transition-opacity duration-500" />
                 )}
 
-                {/* Text Info with Transition - only show on center image */}
-                {index === centerIndex && (
-                  <div className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-4 sm:left-6 md:left-8 right-4 sm:right-6 md:right-8 text-white opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-700 ease-in-out">
-                    <h3 className="text-lg sm:text-xl md:text-2xl font-medium mb-1 sm:mb-2 tracking-wide">
-                      {project.title}
-                    </h3>
-                    <p className="text-sm sm:text-base md:text-lg text-gray-200 mb-1 tracking-wide">
-                      {project.location}
-                    </p>
-                    <p className="text-xs sm:text-sm text-gray-300 tracking-wide">
-                      {project.year}
-                    </p>
-                  </div>
-                )}
+                {/* Text Info - permanent and visible (fade during transition) */}
+                <div className={`
+                  absolute bottom-4 sm:bottom-6 md:bottom-8 left-4 sm:left-6 md:left-8 right-4 sm:right-6 md:right-8 text-white transition-all duration-700 ease-in-out
+                  ${isTransitioning && transitioningIndex === index ? 'opacity-0' : 'opacity-100'}
+                `}>
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-medium mb-1 sm:mb-2 tracking-wide">
+                    {project.title}
+                  </h3>
+                  <p className="text-sm sm:text-base md:text-lg text-gray-200 mb-1 tracking-wide">
+                    {project.location}
+                  </p>
+                  <p className="text-xs sm:text-sm text-gray-300 tracking-wide">
+                    {project.year}
+                  </p>
+                </div>
               </div>
+
+              {/* Slide Trail Effect */}
+              {isTransitioning && transitioningIndex === index && (
+                <div className="absolute inset-0 opacity-30">
+                  <div className={`
+                    absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent
+                    ${isMobile 
+                      ? (slideDirection === 'down' ? 'animate-pulse' : 'animate-pulse')
+                      : (slideDirection === 'right' ? 'animate-pulse' : 'animate-pulse')
+                    }
+                  `} />
+                </div>
+              )}
             </div>
           ))}
 
-          {/* Spacer for scroll */}
-          {!isMobile && <div className="flex-shrink-0 w-48 sm:w-64 md:w-80 lg:w-96" />}
+          {/* Spacer for scroll (hide during transition) */}
+          {!isMobile && !isTransitioning && <div className="flex-shrink-0 w-48 sm:w-64 md:w-80 lg:w-96" />}
         </div>
       </div>
+      
+      {/* Enhanced Transition Overlay with gradient */}
+      {isTransitioning && (
+        <div className="fixed inset-0 z-30">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/95 via-white/90 to-white/95 animate-pulse" />
+          <div className="absolute inset-0 bg-white/60 animate-fade-in" />
+        </div>
+      )}
     </section>
   );
 };
