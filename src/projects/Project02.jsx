@@ -2,8 +2,8 @@ import React, { useRef, useState, useEffect } from 'react';
 import { ArrowLeft, ArrowUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '../components/common/Navigation';
-import Footer from '../components/common/Footer';
 import Project02Text from '../components/sections/Project02Text';
+import Footer from '../components/common/Footer';
 // import WhatsAppButton from '../components/common/WhatsAppButton';
 import { projects } from '../data/ProjectData2.js';
 import { projects as project03Data } from '../data/ProjectData3.js'; // Import Project03 data
@@ -15,6 +15,54 @@ const Project02 = ({ isVisible = true }) => {
   const [centerIndex, setCenterIndex] = useState(0);
   const navigate = useNavigate();
 
+  // Project information data
+  const projectInfo = {
+    location: "Mayiladuthurai , India",
+    completed: "Completed in 2023",
+    builtUpArea: "Buildup area-180sq.ft",
+    descriptions: [
+      "Located in the heart of Mayiladuthurai, this jewellery showroom is a celebration of traditional South Indian craftsmanship, reimagined within a contemporary retail setting. Completed in 2023, the project draws inspiration from the architectural and artisanal language of South Indian temples — particularly in its detailing, material palette, and spatial identity.",
+      "Every element within the space is bespoke — from the hand-carved wooden ceiling elements that reinterpret temple beams and brackets, to the sculptural stone mannequin legs that function as understated pedestals for jewellery display. Not a single piece was mass-produced, reinforcing the brand's values of exclusivity, precision, and heritage.",
+      "The design fuses function with cultural symbolism, creating an environment that feels both rooted and refined. "
+      
+    ]
+  };
+
+  // Create an array with images and paragraphs in correct order
+  const createContentItems = () => {
+    const items = [];
+    let currentIndex = 0;
+    
+    projects.forEach((project, projectIndex) => {
+      // Add the image
+      items.push({
+        type: 'image',
+        project: project,
+        projectIndex: projectIndex,
+        index: currentIndex++
+      });
+    });
+    
+    // Add NEXT button
+    items.push({
+      type: 'next',
+      index: currentIndex++
+    });
+    
+    // Add Project03 preview
+    if (project03Data.length > 0) {
+      items.push({
+        type: 'project03-preview',
+        project: project03Data[0],
+        index: currentIndex++
+      });
+    }
+    
+    return items;
+  };
+
+  const contentItems = createContentItems();
+
   useEffect(() => {
     const checkScreenSize = () => {
       setIsMobile(window.innerWidth < 768);
@@ -24,30 +72,14 @@ const Project02 = ({ isVisible = true }) => {
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
-  // Keyboard navigation effect
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (!isVisible) return;
-      
-      // Total scrollable items: projects + NEXT + project03 preview
-      const totalItems = projects.length + 2;
-      
-      if (e.key === 'ArrowRight') {
-        e.preventDefault();
-        navigateToProject(Math.min(centerIndex + 1, totalItems - 1));
-      } else if (e.key === 'ArrowLeft') {
-        e.preventDefault();
-        navigateToProject(Math.max(centerIndex - 1, 0));
-      }
-    };
+  // Calculate total items
+  const getTotalItems = () => {
+    return projects.length + 2; // projects + NEXT + project03 preview
+  };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isVisible, centerIndex]);
-
-  // Function to navigate to a specific project
-  const navigateToProject = (targetIndex) => {
-    const totalItems = projects.length + 2; // projects + NEXT + project03 preview
+  // Function to navigate to a specific item
+  const navigateToItem = (targetIndex) => {
+    const totalItems = getTotalItems();
     
     if (targetIndex < 0 || targetIndex >= totalItems || targetIndex === centerIndex) {
       return;
@@ -56,90 +88,154 @@ const Project02 = ({ isVisible = true }) => {
     setCenterIndex(targetIndex);
     
     if (scrollRef.current) {
-      const allItems = scrollRef.current.querySelectorAll('[data-scrollable-item]');
-      const targetItem = allItems[targetIndex];
-      
-      if (targetItem) {
-        if (isMobile) {
-          // For mobile, scroll to center the item vertically
-          const containerHeight = scrollRef.current.clientHeight;
-          const itemTop = targetItem.offsetTop;
-          const itemHeight = targetItem.offsetHeight;
-          const targetScrollTop = itemTop - (containerHeight - itemHeight) / 2;
+      if (isMobile) {
+        // For mobile, find the target element and scroll it to viewport center
+        const scrollContainer = scrollRef.current;
+        const targetElement = scrollContainer.querySelector(`[data-item-index="${targetIndex}"]`);
+        
+        if (targetElement) {
+          const containerRect = scrollContainer.getBoundingClientRect();
+          const elementRect = targetElement.getBoundingClientRect();
           
-          scrollRef.current.scrollTo({
-            top: Math.max(0, targetScrollTop),
-            behavior: 'smooth'
-          });
-        } else {
-          // For desktop, scroll to center the item horizontally
-          const containerWidth = scrollRef.current.clientWidth;
-          const itemLeft = targetItem.offsetLeft;
-          const itemWidth = targetItem.offsetWidth;
-          const targetScrollLeft = itemLeft - (containerWidth - itemWidth) / 2;
+          // Calculate the offset needed to center the element in viewport
+          const viewportCenter = containerRect.height / 2;
+          const elementCenter = elementRect.top - containerRect.top + (elementRect.height / 2);
+          const scrollOffset = elementCenter - viewportCenter;
           
-          scrollRef.current.scrollTo({
-            left: Math.max(0, targetScrollLeft),
+          scrollContainer.scrollTo({
+            top: scrollContainer.scrollTop + scrollOffset,
             behavior: 'smooth'
           });
         }
+      } else {
+        // For desktop, scroll horizontally
+        const containerWidth = scrollRef.current.clientWidth;
+        const totalScrollWidth = scrollRef.current.scrollWidth - containerWidth;
+        const targetScrollLeft = (targetIndex / (totalItems - 1)) * totalScrollWidth;
+        
+        scrollRef.current.scrollTo({
+          left: targetScrollLeft,
+          behavior: 'smooth'
+        });
       }
     }
+  };
+
+  // Keyboard navigation effect
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!isVisible) return;
+      
+      const totalItems = getTotalItems();
+      
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        navigateToItem(Math.min(centerIndex + 1, totalItems - 1));
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        navigateToItem(Math.max(centerIndex - 1, 0));
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isVisible, centerIndex]);
+
+  // Helper function to check if an image should be at full size in mobile
+  const shouldImageBeFullSize = (item) => {
+    if (!isMobile || item.type !== 'image') return false;
+    
+    // Get viewport center
+    if (!scrollRef.current) return false;
+    
+    const scrollContainer = scrollRef.current;
+    const containerRect = scrollContainer.getBoundingClientRect();
+    const viewportCenter = containerRect.height / 2;
+    
+    // Find the element
+    const element = scrollContainer.querySelector(`[data-item-index="${item.index}"]`);
+    if (!element) return false;
+    
+    const elementRect = element.getBoundingClientRect();
+    const elementTop = elementRect.top - containerRect.top;
+    const elementCenter = elementTop + (elementRect.height / 2);
+    
+    // Check if this element is closest to center
+    const distance = Math.abs(elementCenter - viewportCenter);
+    
+    // Check if this is the closest image to center
+    let isClosestImage = true;
+    contentItems.forEach((otherItem) => {
+      if (otherItem.type === 'image' && otherItem.index !== item.index) {
+        const otherElement = scrollContainer.querySelector(`[data-item-index="${otherItem.index}"]`);
+        if (otherElement) {
+          const otherElementRect = otherElement.getBoundingClientRect();
+          const otherElementTop = otherElementRect.top - containerRect.top;
+          const otherElementCenter = otherElementTop + (otherElementRect.height / 2);
+          const otherDistance = Math.abs(otherElementCenter - viewportCenter);
+          
+          if (otherDistance < distance) {
+            isClosestImage = false;
+          }
+        }
+      }
+    });
+    
+    return isClosestImage;
   };
 
   useEffect(() => {
     const handleScroll = () => {
       if (scrollRef.current) {
+        const totalItems = getTotalItems();
+        
         if (isMobile) {
           const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
           const maxScroll = scrollHeight - clientHeight;
           const progress = maxScroll > 0 ? scrollTop / maxScroll : 0;
           setScrollProgress(progress);
           
-          // Calculate center item based on viewport center
-          const containerCenter = scrollTop + clientHeight / 2;
-          const items = scrollRef.current.querySelectorAll('[data-scrollable-item]');
-          let newCenterIndex = 0;
+          // Calculate viewport center (middle of visible screen)
+          const viewportCenter = clientHeight / 2;
+          
+          // Find which content item is closest to the viewport center
+          let closestIndex = 0;
           let minDistance = Infinity;
-
-          items.forEach((item, index) => {
-            const rect = item.getBoundingClientRect();
-            const scrollContainer = scrollRef.current.getBoundingClientRect();
-            const itemCenter = rect.top - scrollContainer.top + scrollTop + rect.height / 2;
-            const distance = Math.abs(containerCenter - itemCenter);
+          
+          const scrollContainer = scrollRef.current;
+          const containerRect = scrollContainer.getBoundingClientRect();
+          
+          // Loop through content items to find which one is in center
+          contentItems.forEach((item, itemIndex) => {
+            // Find the corresponding DOM element
+            const elementSelector = `[data-item-index="${item.index}"]`;
+            const element = scrollContainer.querySelector(elementSelector);
             
-            if (distance < minDistance) {
-              minDistance = distance;
-              newCenterIndex = index;
+            if (element) {
+              const elementRect = element.getBoundingClientRect();
+              const elementTop = elementRect.top - containerRect.top;
+              const elementCenter = elementTop + (elementRect.height / 2);
+              const distance = Math.abs(elementCenter - viewportCenter);
+              
+              if (distance < minDistance) {
+                minDistance = distance;
+                closestIndex = item.index;
+              }
             }
           });
           
-          setCenterIndex(newCenterIndex);
+          setCenterIndex(closestIndex);
+          
         } else {
           const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
           const maxScroll = scrollWidth - clientWidth;
           const progress = maxScroll > 0 ? scrollLeft / maxScroll : 0;
           setScrollProgress(progress);
           
-          // Calculate center item based on viewport center
-          const containerCenter = scrollLeft + clientWidth / 2;
-          const items = scrollRef.current.querySelectorAll('[data-scrollable-item]');
-          let newCenterIndex = 0;
-          let minDistance = Infinity;
-
-          items.forEach((item, index) => {
-            const rect = item.getBoundingClientRect();
-            const scrollContainer = scrollRef.current.getBoundingClientRect();
-            const itemCenter = rect.left - scrollContainer.left + scrollLeft + rect.width / 2;
-            const distance = Math.abs(containerCenter - itemCenter);
-            
-            if (distance < minDistance) {
-              minDistance = distance;
-              newCenterIndex = index;
-            }
-          });
-          
-          setCenterIndex(newCenterIndex);
+          // Simple calculation based on scroll percentage for desktop
+          const scrollPercentage = progress;
+          const newCenterIndex = Math.round(scrollPercentage * (totalItems - 1));
+          setCenterIndex(Math.max(0, Math.min(totalItems - 1, newCenterIndex)));
         }
       }
     };
@@ -174,11 +270,17 @@ const Project02 = ({ isVisible = true }) => {
     return 'opacity-70'; // Slightly reduced opacity for non-center images
   };
 
-  const getContainerSize = (index) => {
+  const getContainerSize = (index, itemType = 'image') => {
     if (isMobile) {
-      return index === centerIndex 
-        ? 'w-full max-w-md h-[284px] sm:h-[318px]' // Original mobile size
-        : 'w-full max-w-sm h-[220px] sm:h-[250px]'; // Smaller for non-center
+      // For mobile, only images should change size based on center position
+      if (itemType === 'image') {
+        return index === centerIndex 
+          ? 'w-full max-w-md h-[284px] sm:h-[318px]' // Full size for center image
+          : 'w-full max-w-sm h-[220px] sm:h-[250px]'; // Smaller for non-center images
+      } else {
+        // For NEXT and project03-preview, use consistent sizing
+        return 'w-full max-w-md h-auto min-h-[200px]';
+      }
     } else {
       return index === centerIndex
         ? 'w-[318px] sm:w-[398px] md:w-[511px] lg:w-[567px] xl:w-[658px] h-[227px] sm:h-[284px] md:h-[363px] lg:h-[431px] xl:h-[439px]' // Original desktop size
@@ -201,104 +303,177 @@ const Project02 = ({ isVisible = true }) => {
           className={`
             h-full scrollbar-hide relative
             ${isMobile
-              ? 'flex flex-col overflow-y-auto overflow-x-hidden items-center px-4 gap-8 pb-[40px] pt-[180px]'
-              : 'flex overflow-x-auto overflow-y-hidden items-center gap-8'
+              ? 'flex flex-col overflow-y-auto overflow-x-hidden items-center px-4 gap-6 pb-[40px] pt-[120px]'
+              : 'flex overflow-x-auto overflow-y-hidden items-center'
             }
           `}
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          {/* Scroll Indicator */}
+          {/* Desktop Project Information and Scroll Indicator */}
           <div className={`
-            absolute transform flex items-center gap-1 sm:gap-2 md:gap-3 lg:gap-4 text-black pointer-events-none z-10
+            absolute transform pointer-events-none
             ${isMobile
-              ? 'top-[95px] left-1/2 -translate-x-1/2 flex-col text-center'
-              : 'top-1/2 -translate-y-1/2 left-3 sm:left-4 md:left-6 lg:left-8 xl:left-[calc(25vw-200px)]'
+              ? 'top-[40px] left-1/2 -translate-x-1/2 flex flex-col items-center text-center z-30'
+              : 'top-1/2 -translate-y-1/2 left-4 sm:left-6 md:left-8 lg:left-12 xl:left-16 flex items-center z-50'
             }
           `}>
-            <span className={`font-medium tracking-[0.1em] sm:tracking-[0.15em] ${
-              isMobile 
-                ? 'text-sm sm:text-base'
-                : 'text-[10px] sm:text-xs md:text-sm lg:text-base'
-            }`}>
-              SCROLL
-            </span>
-            {isMobile ? (
-              <>
-                <ArrowUp className={`text-black ${isMobile ? 'w-4 h-4 sm:w-5 sm:h-5' : 'w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4'}`} />
-                <div className={`bg-black w-px ${isMobile ? 'h-6 sm:h-8' : 'h-4 sm:h-6 md:h-8 lg:h-12'}`}></div>
-              </>
-            ) : (
-              <>
-                <div className="bg-black w-4 sm:w-6 md:w-8 lg:w-12 h-px"></div>
-                <ArrowLeft className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 rotate-180 text-black" />
-              </>
+            {/* Desktop Layout */}
+            {!isMobile && (
+              <div className="flex items-center gap-8 md:gap-12 lg:gap-16 pl-14">
+                {/* Project Information Section */}
+                <div className="max-w-[280px] lg:max-w-[320px] xl:max-w-[500px] flex flex-col justify-evenly gap-2">
+                  <p className="text-xs md:text-sm lg:text-base text-black leading-relaxed font-light">
+                    {projectInfo.location}
+                  </p>
+                  <p className="text-xs md:text-sm lg:text-base text-black leading-relaxed font-light">
+                    {projectInfo.completed}
+                  </p>
+                  <p className="text-xs md:text-sm lg:text-base text-black leading-relaxed font-light">
+                    {projectInfo.builtUpArea}
+                  </p>
+                  {projectInfo.descriptions.map((desc, index) => (
+                    <p key={index} className="text-xs md:text-sm lg:text-base text-black leading-relaxed font-light">
+                      {desc}
+                    </p>
+                  ))}
+                </div>
+                
+                {/* Scroll Indicator */}
+                <div className="flex items-center gap-1 lg:gap-1 text-black">
+                  <span className="font-light leading-relaxed text-xs md:text-sm lg:text-base">
+                    SCROLL
+                  </span>
+                  <div className="bg-black w-4 sm:w-6 md:w-8 lg:w-12 h-px"></div>
+                  <ArrowLeft className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 rotate-180 text-black" />
+                </div>
+              </div>
+            )}
+            
+            {/* Mobile Layout - Only Scroll Indicator */}
+            {isMobile && (
+              <div className="flex flex-col items-center gap-1 sm:gap-2">
+                <span className=" tracking-[0.1em] sm:tracking-[0.15em] text-sm sm:text-base text-black mt-[40px]">
+                  SCROLL
+                </span>
+                <ArrowUp className="text-black w-4 h-4 sm:w-5 sm:h-5" />
+                <div className="bg-black w-px h-6 sm:h-8"></div>
+              </div>
             )}
           </div>
 
-          {projects.map((project, index) => (
-            <div
-              key={project.id}
-              data-scrollable-item="true"
-              className={`
-                flex-shrink-0 relative group transition-all duration-700 ease-in-out
-                ${getContainerSize(index)}
-                ${index === centerIndex ? 'z-10' : 'z-0'}
-                ${isMobile ? '' : 'mt-[5vh]'} ${index === projects.length - 1 && isMobile ? ' mb-[50px]' : ''}
-              `}
-              style={!isMobile && index === 0 ? {
-                marginLeft: 'clamp(10vw, 25vw, 25vw)'
-              } : {}}
-            >
-              <div className={`h-full relative overflow-hidden rounded-none md:rounded-none transition-all duration-700 ${getImageOpacity(index)}`}>
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover scale-100 transition-transform duration-700 group-hover:scale-105"
-                />
-              </div>
-            </div>
-          ))}
-
-          {/* NEXT Button - appears after last image */}
-          <div
-            data-scrollable-item="true"
-            onClick={handleNextClick}
-            className={`
-              flex-shrink-0 relative group cursor-pointer flex items-center justify-center transition-all duration-700 ease-in-out
-              ${getContainerSize(projects.length)}
-              ${projects.length === centerIndex ? 'z-10' : 'z-0'}
-              ${isMobile ? 'mb-[50px]' : 'mt-[5vh]'}
-            `}
-          >
-            <div className={`h-full w-full relative flex items-center justify-center text-black transition-all duration-700 ${getImageOpacity(projects.length)}`}>
-              <span className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-wider">
-                NEXT
-              </span>
-            </div>
-          </div>
-
-          {/* First image from Project03 - appears after NEXT text */}
-          {project03Data.length > 0 && (
-            <div
-              data-scrollable-item="true"
-              key={`project03-preview-${project03Data[0].id}`}
-              className={`
-                flex-shrink-0 relative group cursor-pointer transition-all duration-700 ease-in-out
-                ${getContainerSize(projects.length + 1)}
-                ${projects.length + 1 === centerIndex ? 'z-10' : 'z-0'}
-                ${isMobile ? 'mb-[50px]' : 'mt-[5vh]'}
-              `}
-              onClick={handleNextClick}
-            >
-              <div className={`h-full relative overflow-hidden rounded-none md:rounded-none transition-all duration-700 ${getImageOpacity(projects.length + 1)}`}>
-                <img
-                  src={project03Data[0].image}
-                  alt={project03Data[0].title}
-                  className="w-full h-full object-cover scale-100 transition-transform duration-700 group-hover:scale-105"
-                />
+          {/* Mobile Project Information - Inside scroll container */}
+          {isMobile && (
+            <div className="w-full max-w-md mx-auto px-3 mt-8">
+              <div className="space-y-3">
+                <p className="text-sm text-black font-light">{projectInfo.location}</p>
+                <p className="text-sm text-black font-light">{projectInfo.completed}</p>
+                <p className="text-sm text-black font-light">{projectInfo.builtUpArea}</p>
+                <div className="space-y-2">
+                  {projectInfo.descriptions.map((desc, index) => (
+                    <p key={index} className="text-sm text-black leading-relaxed font-light">
+                      {desc}
+                    </p>
+                  ))}
+                </div>
               </div>
             </div>
           )}
+
+          {/* Render content items */}
+          {contentItems.map((item, index) => {
+            if (item.type === 'image') {
+              const isImageCentered = isMobile ? shouldImageBeFullSize(item) : item.index === centerIndex;
+              
+              return (
+                <div
+                  key={item.project.id}
+                  data-item-index={item.index}
+                  className={`
+                    flex-shrink-0 relative group transition-all duration-700 ease-in-out
+                    ${isMobile 
+                      ? (isImageCentered 
+                          ? 'w-full max-w-md h-[284px] sm:h-[318px]' 
+                          : 'w-full max-w-sm h-[220px] sm:h-[250px]')
+                      : getContainerSize(item.index, 'image')
+                    }
+                    ${item.index === centerIndex ? 'z-10' : 'z-0'}
+                    ${isMobile ? '' : 'mt-[5vh]'}
+                    ${isMobile && item.projectIndex === projects.length - 1 ? 'mb-[50px]' : ''}
+                    ${isMobile && item.projectIndex === 0 ? 'mt-[50px]' : ''}
+                  `}
+                  style={!isMobile ? {
+                    marginLeft: index === 0 && item.type === 'image'
+                      ? 'clamp(55vw, 50vw, 60vw)'
+                      : 'clamp(1rem, 2rem, 2rem)'
+                  } : {}}
+                >
+                  <div className={`h-full relative overflow-hidden rounded-none md:rounded-none transition-all duration-700 ${getImageOpacity(item.index)}`}>
+                    <img
+                      src={item.project.image}
+                      alt={item.project.title}
+                      className="w-full h-full object-cover scale-100 transition-transform duration-700 group-hover:scale-105"
+                    />
+                  </div>
+                </div>
+              );
+            }
+
+            if (item.type === 'next') {
+              return (
+                <div
+                  key="next-button"
+                  data-item-index={item.index}
+                  onClick={handleNextClick}
+                  className={`
+                    flex-shrink-0 relative group cursor-pointer flex items-center justify-center transition-all duration-700 ease-in-out
+                    ${getContainerSize(item.index, 'next')}
+                    ${item.index === centerIndex ? 'z-10' : 'z-0'}
+                    ${isMobile ? '' : 'mt-[5vh]'}
+                    ${isMobile ? 'mb-[50px]' : ''}
+                  `}
+                  style={!isMobile ? {
+                    marginLeft: 'clamp(1rem, 2rem, 2rem)'
+                  } : {}}
+                >
+                  <div className={`h-full w-full relative flex items-center justify-center text-black transition-all duration-700 ${getImageOpacity(item.index)}`}>
+                    <span className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-wider">
+                      NEXT
+                    </span>
+                  </div>
+                </div>
+              );
+            }
+
+            if (item.type === 'project03-preview') {
+              return (
+                <div
+                  key={`project03-preview-${item.project.id}`}
+                  data-item-index={item.index}
+                  className={`
+                    flex-shrink-0 relative group cursor-pointer transition-all duration-700 ease-in-out
+                    ${getContainerSize(item.index, 'project03-preview')}
+                    ${item.index === centerIndex ? 'z-10' : 'z-0'}
+                    ${isMobile ? '' : 'mt-[5vh]'}
+                    ${isMobile ? 'mb-[50px]' : ''}
+                  `}
+                  style={!isMobile ? {
+                    marginLeft: 'clamp(1rem, 2rem, 2rem)'
+                  } : {}}
+                  onClick={handleNextClick}
+                >
+                  <div className={`h-full relative overflow-hidden rounded-none md:rounded-none transition-all duration-700 ${getImageOpacity(item.index)}`}>
+                    <img
+                      src={item.project.image}
+                      alt={item.project.title}
+                      className="w-full h-full object-cover scale-100 transition-transform duration-700 group-hover:scale-105"
+                    />
+                  </div>
+                </div>
+              );
+            }
+
+            return null;
+          })}
 
           {/* Spacer for scroll */}
           {!isMobile && <div className="flex-shrink-0 w-48 sm:w-64 md:w-80 lg:w-96" />}
