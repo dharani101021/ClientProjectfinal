@@ -9,7 +9,8 @@ import img7 from '../assets/images/project3/An Artist Studio/img7.jpg';
 import img8 from '../assets/images/project3/An Artist Studio/img8.jpg';
 import img9 from '../assets/images/project3/An Artist Studio/img9.jpg';
 import img10 from '../assets/images/project3/An Artist Studio/img10.jpg';
-import img11 from '../assets/images/project3/An Artist Studio/img11.jpg'; 
+import img11 from '../assets/images/project3/An Artist Studio/img11.jpg';
+import img12 from '../assets/images/project3/An Artist Studio/img12.jpg';
 
 export const projects = [
   {
@@ -60,5 +61,8 @@ export const projects = [
       id: 12,
       image: img11,
     },
+    { id: 13,
+      image: img12,
+    }
    
 ];
