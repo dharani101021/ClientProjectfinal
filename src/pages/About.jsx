@@ -39,7 +39,7 @@ const About = () => {
   }, [isMobile]);
 
   const Section = ({ children, mobile = false }) => (
-    <section className={`${mobile ? 'py-12 px-4' : 'w-screen h-full flex items-center justify-center px-8 py-8'}`}>
+    <section className={`${mobile ? 'py-12 px-6' : 'w-screen h-full flex items-center justify-center px-8 py-8'}`}>
       {children}
     </section>
   );
@@ -53,7 +53,7 @@ const About = () => {
       );
     }
     return (
-      <div className="w-full max-w-sm aspect-square bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden">
+      <div className="w-full max-w-sm aspect-square bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden mx-auto">
         <img src={src} alt={alt} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
       </div>
     );
@@ -154,7 +154,7 @@ const About = () => {
               </h1>
             </AnimatedText>
             <AnimatedText animate delay={0.4}>
-              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed text-justify" style={{ lineHeight: '1.7' }}>
+              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed text-center" style={{ lineHeight: '1.7' }}>
                 {aboutData.hero.description}
               </p>
             </AnimatedText>
@@ -218,7 +218,7 @@ const About = () => {
               <AnimatedText className="space-y-4">
                 {aboutData.philosophy.principles.map((principle, i) => (
                   <div key={i} className="p-4 rounded-lg shadow-sm">
-                    <h3 className="text-lg font-medium mb-2 text-gray-900">{principle.title}</h3>
+                    <h3 className="text-lg font-medium mb-2 text-gray-900 text-center">{principle.title}</h3>
                     <p className="text-gray-600 leading-relaxed text-xs text-justify" style={{ lineHeight: '1.5' }}>
                       {principle.description}
                     </p>
@@ -242,32 +242,30 @@ const About = () => {
 
         {/* --- OUR JOURNEY (MOBILE) --- */}
         <Section mobile>
-  <div className="max-w-4xl mx-auto">
-    <AnimatedText>
-      <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-center sm:mb-8 mb-6">
-        {aboutData.ourJourney.title}
-      </h2>
-    </AnimatedText>
-    <div className="space-y-6">
-      <AnimatedText className="flex justify-center" delay={0.4}>
-        <ImageContainer src={aboutData.ourJourney.image.src} alt={aboutData.ourJourney.image.alt} />
-      </AnimatedText>
-      <AnimatedText delay={0.2} className="space-y-4">
-        {aboutData.ourJourney.bio.map((paragraph, i) => (
-          <p
-            key={i}
-            className={`text-xs sm:text-sm text-gray-600 leading-relaxed text-justify${i !== aboutData.ourJourney.bio.length - 1 ? ' mb-4' : ''}`}
-            style={{ lineHeight: '1.7' }}
-          >
-            {paragraph}
-          </p>
-        ))}
-      </AnimatedText>
-     
-    </div>
-  </div>
-</Section>
-
+          <div className="max-w-4xl mx-auto">
+            <AnimatedText>
+              <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-center sm:mb-8 mb-6">
+                {aboutData.ourJourney.title}
+              </h2>
+            </AnimatedText>
+            <div className="space-y-6">
+              <AnimatedText className="flex justify-center" delay={0.4}>
+                <ImageContainer src={aboutData.ourJourney.image.src} alt={aboutData.ourJourney.image.alt} />
+              </AnimatedText>
+              <AnimatedText delay={0.2} className="space-y-4">
+                {aboutData.ourJourney.bio.map((paragraph, i) => (
+                  <p
+                    key={i}
+                    className={`text-xs sm:text-sm text-gray-600 leading-relaxed text-justify${i !== aboutData.ourJourney.bio.length - 1 ? ' mb-4' : ''}`}
+                    style={{ lineHeight: '1.7' }}
+                  >
+                    {paragraph}
+                  </p>
+                ))}
+              </AnimatedText>
+            </div>
+          </div>
+        </Section>
 
         {/* CTA */}
         <Section mobile>

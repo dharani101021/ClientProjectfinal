@@ -238,7 +238,7 @@ const HeroSection = ({ isVisible = true }) => {
           className={`
             h-full scrollbar-hide relative
             ${isMobile
-              ? 'flex flex-col overflow-y-auto overflow-x-hidden items-center px-4 gap-8 pb-[40px] pt-[180px]'
+              ? 'flex flex-col overflow-y-auto overflow-x-hidden items-center px-4 gap-8 pb-[80px] pt-[180px]'
               : 'flex overflow-x-auto overflow-y-hidden items-center gap-8'
             }
             ${isTransitioning ? 'pointer-events-none' : ''}
