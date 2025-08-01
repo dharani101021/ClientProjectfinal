@@ -32,10 +32,10 @@ const Contact = () => {
                   <div>
                     <h2 className="text-sm sm:text-base lg:text-lg font-semibold tracking-wide mb-4 sm:mb-6">PHONE</h2>
                     <a href="tel:+919940788844" className="hover:text-gray-900 transition-colors block">
-                      +91 9940788844
+                      +91 99407  -  88844
                     </a>
                     <a href="tel:+919629298337" className="hover:text-gray-900 transition-colors block">
-                      +91 9629298337
+                      +91 96292  -  98337
                     </a>
                   </div>
                 </div>
@@ -47,11 +47,11 @@ const Contact = () => {
                   <div>
                     
                     <p className="text-sm sm:text-base lg:text-lg leading-relaxed pb-6">
-                      Chennai<br/>
-                      Coimbatore<br/>
-                      Koodu Office@ <br/>
                       No-1 Kasukkara street,<br/>
-                      Mayiladuthurai - 609001
+                      Mayiladuthurai - 609001<br/>
+                      Koodu Office@ <br/>
+                      Coimbatore - Chennai - Erode<br/>
+                      
                     </p>
                   </div>
                 </div>
@@ -69,7 +69,7 @@ const Contact = () => {
                     <input
                       type="text"
                       className="w-full bg-transparent border-b border-gray-600 py-3 sm:py-4 text-gray-900 placeholder-gray-500 focus:border-black focus:outline-none transition-colors text-sm sm:text-base"
-                      placeholder="John"
+                      placeholder="Your Name"
                     />
                   </div>
                   <div>
@@ -101,7 +101,7 @@ const Contact = () => {
                   <input
                     type="email"
                     className="w-full bg-transparent border-b border-gray-600 py-3 sm:py-4 text-gray-900 placeholder-gray-500 focus:border-black focus:outline-none transition-colors text-sm sm:text-base"
-                    placeholder="john.doe@example.com"
+                    placeholder="Your mail"
                   />
                 </div>
 
@@ -118,7 +118,7 @@ const Contact = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-gray-900 text-gray-100 py-4 sm:py-5 tracking-wider font-medium hover:bg-gray-800 transition-colors text-sm sm:text-base touch-manipulation rounded-full border-2 border-gray-100 hover:border-gray-800"
+                  className="w-full bg-gray-900 text-gray-100 py-4 sm:py-5 tracking-wider font-medium hover:bg-gray-800 transition-colors text-sm sm:text-base touch-manipulation  border-2 border-gray-100 hover:border-gray-800"
                 >
                   SEND MESSAGE
                 </button>

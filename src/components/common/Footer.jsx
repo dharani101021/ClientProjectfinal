@@ -1,3 +1,4 @@
+import React from 'react';
 import { Instagram } from 'lucide-react';
 import { FaWhatsapp } from 'react-icons/fa';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -11,6 +12,11 @@ const Footer = () => {
     navigate('/contact');
   };
 
+  // Function to handle Instagram button click
+  const handleInstagramClick = () => {
+    window.open('https://www.instagram.com/koodu_architecture?igsh=eTlrOW14NTU4Z3Jq', '_blank');
+  };
+
   return (
     <footer className="fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-black">
       <div className="flex flex-col md:flex-row justify-between items-center px-4 md:px-12 py-4 md:py-6 gap-3 md:gap-0">
@@ -18,7 +24,11 @@ const Footer = () => {
         <div className="flex justify-center md:justify-start w-full md:w-[40%]">
           {/* Mobile view with Instagram icon and WhatsApp icon */}
           <div className="flex md:hidden items-center gap-3">
-            <button className="text-black hover:text-gray-600 transition-colors">
+            <button 
+              onClick={handleInstagramClick}
+              className="text-black hover:text-gray-600 transition-colors"
+              aria-label="Visit Instagram"
+            >
               <Instagram className="w-5 h-5" />
             </button>
             <button
@@ -30,7 +40,7 @@ const Footer = () => {
             >
               © 2025. KOODU ARCHITECTURE
             </button>
-            <button className="text-black hover:text-gray-600 transition-colors">
+            <button className="text-black hover:text-gray-600 transition-colors" aria-label="WhatsApp">
               <FaWhatsapp className="w-5 h-5" />
             </button>
           </div>
@@ -49,7 +59,11 @@ const Footer = () => {
 
         {/* Instagram - hidden on mobile, shown on desktop */}
         <div className="hidden md:flex justify-center w-full md:w-[20%]">
-          <button className="text-sm md:text-xl font-medium tracking-wider hover:text-gray-600 transition-colors flex items-center gap-2 cursor-pointer text-gray-800">
+          <button 
+            onClick={handleInstagramClick}
+            className="text-sm md:text-xl font-medium tracking-wider hover:text-gray-600 transition-colors flex items-center gap-2 cursor-pointer text-gray-800"
+            aria-label="Visit Instagram"
+          >
             <Instagram className="w-5 h-5" />
             INSTAGRAM
           </button>
@@ -68,7 +82,7 @@ const Footer = () => {
           >
             CONTACT
           </button>
-          <button className="text-black hover:text-gray-600 transition-colors mr-0 md:mr-[10%] ml-6">
+          <button className="text-black hover:text-gray-600 transition-colors mr-0 md:mr-[10%] ml-6" aria-label="WhatsApp">
             <FaWhatsapp className="w-7 h-7" />
           </button>
         </div>

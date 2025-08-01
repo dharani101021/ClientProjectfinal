@@ -39,7 +39,7 @@ const Navigation = () => {
               }`}
               style={location.pathname === '/' ? { color: '#58351c' } : {}}
             >
-              PROJECTS 01-05
+              PROJECTS 01-03
             </button>
           </div>
           <div className="flex justify-end" style={{ width: '40%' }}>
@@ -79,7 +79,7 @@ const Navigation = () => {
                 }`}
                 style={location.pathname === '/' ? { color: '#58351c' } : {}}
               >
-                PROJECTS 01-05
+                PROJECTS 01-03
               </button>
               <button
                 onClick={() => handleNavigation('/about')}

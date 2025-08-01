@@ -3,7 +3,7 @@ import React from 'react';
 const Project01Text = ({ showOnlyOnHome = true, isHomePage = true }) => {
   if (showOnlyOnHome && !isHomePage) return null;
 
-  const textContent = "PANAI VEEDU";
+  const textContent = "PAANAI VEEDU";
 
   return (
     <div className="fixed left-0 w-full overflow-hidden z-20 pointer-events-none border-b border-gray-800 bg-white top-[85px] md:top-[100px] lg:top-[100px] flex items-center" 

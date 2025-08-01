@@ -279,7 +279,7 @@ const About = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => navigate('/')}
-                className="bg-gray-900 text-white px-6 py-3 rounded-lg text-xs sm:text-sm font-medium hover:bg-gray-800 transition-colors shadow-lg"
+                className="bg-gray-900 text-white px-6 py-3 text-xs sm:text-sm font-medium hover:bg-gray-800 transition-colors shadow-lg"
               >
                 {aboutData.cta.buttonText}
               </motion.button>
@@ -447,7 +447,7 @@ const About = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => navigate('/')}
-                  className="bg-gray-900 text-white px-6 py-3 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors shadow-lg"
+                  className="bg-gray-900 text-white px-6 py-3 text-sm font-medium hover:bg-gray-800 transition-colors shadow-lg"
                 >
                   {aboutData.cta.buttonText}
                 </motion.button>

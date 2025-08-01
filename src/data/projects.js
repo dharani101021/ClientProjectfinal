@@ -6,25 +6,25 @@ import cover3 from '../assets/images/project3/An Artist Studio/cover3.jpg';
 export const projects = [
   {
     id: 1,
-    title: "PANAI VEEDU",
-    location: "TAMIL NADU",
-    year: "2025",
+    title: "PAANAI VEEDU",
+    location: "CHENNAI",
+    year: "2022",
     image: cover1
     
   },
   {
     id: 2,
     title: "TRADITIONAL JEWELLARY",
-    location: "TAMIL NADU",
-    year: "2025", 
+    location: "MAYILADUTHURAI",
+    year: "2023", 
     image: cover2
 
   },
   {
     id: 3,
     title: "AN ARTIST STUDIO",
-    location: "TAMIL NADU",
-    year: "2025",
+    location: "CHENNAI",
+    year: "2022",
     image: cover3
 
   },

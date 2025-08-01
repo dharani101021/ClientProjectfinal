@@ -24,17 +24,11 @@ const Project01 = ({ isVisible = true }) => {
     10: "The interiors play with split levels and interconnected volumes, offering varied spatial experiences while maintaining visual continuity between generations." // Before 11th image (index 10)
   };
 
-  // Project information data
+  // Project information data (descriptions removed)
   const projectInfo = {
     location: "Chennai, India",
     completed: "Completed in 2022",
-    builtUpArea: "Built-Up Area: 3850sqft",
-    descriptions: [
-      "At the heart of the home lies a central courtyard — a traditional gesture reinterpreted for modern living.",
-      "This void introduces natural light and ventilation deep into the home, complemented by a lily pond at the entrance that offers a tranquil threshold between the city and the sanctuary within.",
-      "Paanai Veedu, translating to \"Pot House,\" is a multi-generational residence nestled in a dense urban neighborhood of Chennai.",
-      "Conceived as a home for three generations — children, parents, and grandparents — the design is centered around fostering intergenerational harmony through spatial layering, tactile materiality, and climatic responsiveness."
-    ]
+    builtUpArea: "Built-Up Area: 3850sqft"
   };
 
   // Create an array with images and paragraphs in correct order
@@ -319,6 +313,19 @@ const Project01 = ({ isVisible = true }) => {
     navigate('/project02');
   };
 
+  // Helper function to determine margin for items
+  const getItemMargin = (index, itemType, isFirstContentItem) => {
+    if (isMobile) return {};
+    
+    if (isFirstContentItem) {
+      // Small additional gap to prevent arrow overlay while keeping images close
+      return { marginLeft: 'clamp(28vw, 33vw, 36vw)' }; // Slight increase to clear the arrow
+    } else {
+      // Normal spacing between subsequent items
+      return { marginLeft: 'clamp(1rem, 2rem, 2rem)' };
+    }
+  };
+
   return (
     <section className={`fixed inset-0 bg-white transition-transform duration-1000 ${isVisible ? 'translate-x-0' : '-translate-x-full'}`}>
       <Navigation/>
@@ -358,16 +365,11 @@ const Project01 = ({ isVisible = true }) => {
                   <p className="text-xs md:text-sm lg:text-base text-black leading-relaxed font-light">
                     {projectInfo.builtUpArea}
                   </p>
-                  {projectInfo.descriptions.map((desc, index) => (
-                    <p key={index} className="text-xs md:text-sm lg:text-base text-black leading-relaxed font-light">
-                      {desc}
-                    </p>
-                  ))}
                 </div>
                 
                 {/* Scroll Indicator */}
                 <div className="flex items-center gap-1 lg:gap-1 text-black">
-                  <span className="font-light leading-relaxed text-xs md:text-sm lg:text-base">
+                  <span className="font-light leading-relaxed text-xs md:text-sm lg:text-base ">
                     SCROLL
                   </span>
                   <div className="bg-black w-4 sm:w-6 md:w-8 lg:w-12 h-px"></div>
@@ -379,7 +381,7 @@ const Project01 = ({ isVisible = true }) => {
             {/* Mobile Layout - Only Scroll Indicator */}
             {isMobile && (
               <div className="flex flex-col items-center gap-1 sm:gap-2">
-                <span className=" tracking-[0.1em] sm:tracking-[0.15em] text-sm sm:text-base text-black mt-[40px]">
+                <span className=" tracking-[0.1em] sm:tracking-[0.15em] text-sm sm:text-base text-black mt-[50px]">
                   SCROLL
                 </span>
                 <ArrowUp className="text-black w-4 h-4 sm:w-5 sm:h-5" />
@@ -390,24 +392,19 @@ const Project01 = ({ isVisible = true }) => {
 
           {/* Mobile Project Information - Inside scroll container */}
           {isMobile && (
-            <div className="w-full max-w-md mx-auto px-3 mt-8">
+            <div className="w-full max-w-md mx-auto px-3 mt-14">
               <div className="space-y-3">
                 <p className="text-sm text-black font-light">{projectInfo.location}</p>
                 <p className="text-sm text-black font-light">{projectInfo.completed}</p>
                 <p className="text-sm text-black font-light">{projectInfo.builtUpArea}</p>
-                <div className="space-y-2">
-                  {projectInfo.descriptions.map((desc, index) => (
-                    <p key={index} className="text-sm text-black leading-relaxed font-light">
-                      {desc}
-                    </p>
-                  ))}
-                </div>
               </div>
             </div>
           )}
 
           {/* Render content items */}
           {contentItems.map((item, index) => {
+            const isFirstContentItem = index === 0;
+            
             if (item.type === 'paragraph') {
               return (
                 <div
@@ -419,11 +416,7 @@ const Project01 = ({ isVisible = true }) => {
                     ${item.index === centerIndex ? 'z-10' : 'z-0'}
                     ${isMobile ? '' : 'mt-[5vh]'}
                   `}
-                  style={!isMobile ? {
-                    marginLeft: index === 0
-                      ? 'clamp(55vw, 50vw, 60vw)'
-                      : 'clamp(1rem, 2rem, 2rem)'
-                  } : {}}
+                  style={getItemMargin(item.index, 'paragraph', isFirstContentItem)}
                 >
                   <div className={`
                     h-full w-full flex items-center justify-center text-center transition-all duration-700 
@@ -461,13 +454,9 @@ const Project01 = ({ isVisible = true }) => {
                     ${item.index === centerIndex ? 'z-10' : 'z-0'}
                     ${isMobile ? '' : 'mt-[5vh]'}
                     ${isMobile && item.projectIndex === projects.length - 1 ? 'mb-[50px]' : ''}
-                    ${isMobile && item.projectIndex === 0 ? 'mt-[50px]' : ''}
+                    ${isMobile && item.projectIndex === 0 ? 'mt-[20px]' : ''}
                   `}
-                  style={!isMobile ? {
-                    marginLeft: index === 0 && item.type === 'image'
-                      ? 'clamp(55vw, 50vw, 60vw)'
-                      : 'clamp(1rem, 2rem, 2rem)'
-                  } : {}}
+                  style={getItemMargin(item.index, 'image', isFirstContentItem)}
                 >
                   <div className={`h-full relative overflow-hidden rounded-none md:rounded-none transition-all duration-700 ${getImageOpacity(item.index)}`}>
                     <img
@@ -493,9 +482,7 @@ const Project01 = ({ isVisible = true }) => {
                     ${isMobile ? '' : 'mt-[5vh]'}
                     ${isMobile ? 'mb-[50px]' : ''}
                   `}
-                  style={!isMobile ? {
-                    marginLeft: 'clamp(1rem, 2rem, 2rem)'
-                  } : {}}
+                  style={getItemMargin(item.index, 'next', isFirstContentItem)}
                 >
                   <div className={`h-full w-full relative flex items-center justify-center text-black transition-all duration-700 ${getImageOpacity(item.index)}`}>
                     <span className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-wider">
@@ -518,9 +505,7 @@ const Project01 = ({ isVisible = true }) => {
                     ${isMobile ? '' : 'mt-[5vh]'}
                     ${isMobile ? 'mb-[50px]' : ''}
                   `}
-                  style={!isMobile ? {
-                    marginLeft: 'clamp(1rem, 2rem, 2rem)'
-                  } : {}}
+                  style={getItemMargin(item.index, 'project02-preview', isFirstContentItem)}
                   onClick={handleNextClick}
                 >
                   <div className={`h-full relative overflow-hidden rounded-none md:rounded-none transition-all duration-700 ${getImageOpacity(item.index)}`}>

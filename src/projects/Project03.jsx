@@ -19,12 +19,7 @@ const Project03 = ({ isVisible = true }) => {
   const projectInfo = {
     location: "Location , India",
     completed: "Completed in 2024",
-    builtUpArea: "Buildup area-XXXsq.ft",
-    descriptions: [
-      "Add your project description here for Project03. This is the first paragraph describing the project details, location, and key features.",
-      "Add the second paragraph here describing the design philosophy, materials used, and architectural approach taken for this project.",
-      "Add the third paragraph here describing the unique elements and final outcomes of the project."
-    ]
+    builtUpArea: "Buildup area-XXXsq.ft"
   };
 
   // Create an array with images and paragraphs in correct order
@@ -330,11 +325,6 @@ const Project03 = ({ isVisible = true }) => {
                   <p className="text-xs md:text-sm lg:text-base text-black leading-relaxed font-light">
                     {projectInfo.builtUpArea}
                   </p>
-                  {projectInfo.descriptions.map((desc, index) => (
-                    <p key={index} className="text-xs md:text-sm lg:text-base text-black leading-relaxed font-light">
-                      {desc}
-                    </p>
-                  ))}
                 </div>
                 
                 {/* Scroll Indicator */}
@@ -351,7 +341,7 @@ const Project03 = ({ isVisible = true }) => {
             {/* Mobile Layout - Only Scroll Indicator */}
             {isMobile && (
               <div className="flex flex-col items-center gap-1 sm:gap-2">
-                <span className=" tracking-[0.1em] sm:tracking-[0.15em] text-sm sm:text-base text-black mt-[40px]">
+                <span className=" tracking-[0.1em] sm:tracking-[0.15em] text-sm sm:text-base text-black mt-[50px]">
                   SCROLL
                 </span>
                 <ArrowUp className="text-black w-4 h-4 sm:w-5 sm:h-5" />
@@ -362,18 +352,11 @@ const Project03 = ({ isVisible = true }) => {
 
           {/* Mobile Project Information - Inside scroll container */}
           {isMobile && (
-            <div className="w-full max-w-md mx-auto px-3 mt-8">
+            <div className="w-full max-w-md mx-auto px-3 mt-14">
               <div className="space-y-3">
                 <p className="text-sm text-black font-light">{projectInfo.location}</p>
                 <p className="text-sm text-black font-light">{projectInfo.completed}</p>
                 <p className="text-sm text-black font-light">{projectInfo.builtUpArea}</p>
-                <div className="space-y-2">
-                  {projectInfo.descriptions.map((desc, index) => (
-                    <p key={index} className="text-sm text-black leading-relaxed font-light">
-                      {desc}
-                    </p>
-                  ))}
-                </div>
               </div>
             </div>
           )}
@@ -398,11 +381,11 @@ const Project03 = ({ isVisible = true }) => {
                     ${item.index === centerIndex ? 'z-10' : 'z-0'}
                     ${isMobile ? '' : 'mt-[5vh]'}
                     ${isMobile && item.projectIndex === projects.length - 1 ? 'mb-[50px]' : ''}
-                    ${isMobile && item.projectIndex === 0 ? 'mt-[50px]' : ''}
+                    ${isMobile && item.projectIndex === 0 ? 'mt-[20px]' : ''}
                   `}
                   style={!isMobile ? {
                     marginLeft: index === 0 && item.type === 'image'
-                      ? 'clamp(55vw, 50vw, 60vw)'
+                      ? 'clamp(30vw, 32vw, 35vw)'
                       : 'clamp(1rem, 2rem, 2rem)'
                   } : {}}
                 >
