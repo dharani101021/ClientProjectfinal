@@ -69,7 +69,7 @@ const Contact = () => {
                     <input
                       type="text"
                       className="w-full bg-transparent border-b border-gray-600 py-3 sm:py-4 text-gray-900 placeholder-gray-500 focus:border-black focus:outline-none transition-colors text-sm sm:text-base"
-                      placeholder="Your Name"
+                      placeholder="Enter your Name"
                     />
                   </div>
                   <div>
@@ -101,7 +101,7 @@ const Contact = () => {
                   <input
                     type="email"
                     className="w-full bg-transparent border-b border-gray-600 py-3 sm:py-4 text-gray-900 placeholder-gray-500 focus:border-black focus:outline-none transition-colors text-sm sm:text-base"
-                    placeholder="Your mail"
+                    placeholder="Enter your mail"
                   />
                 </div>
 

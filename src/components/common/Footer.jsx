@@ -17,6 +17,11 @@ const Footer = () => {
     window.open('https://www.instagram.com/koodu_architecture?igsh=eTlrOW14NTU4Z3Jq', '_blank');
   };
 
+  // Function to handle WhatsApp button click
+  const handleWhatsAppClick = () => {
+    window.open('https://wa.me/919629298337', '_blank');
+  };
+
   return (
     <footer className="fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-black">
       <div className="flex flex-col md:flex-row justify-between items-center px-4 md:px-12 py-4 md:py-6 gap-3 md:gap-0">
@@ -40,7 +45,11 @@ const Footer = () => {
             >
               © 2025. KOODU ARCHITECTURE
             </button>
-            <button className="text-black hover:text-gray-600 transition-colors" aria-label="WhatsApp">
+            <button 
+              onClick={handleWhatsAppClick}
+              className="text-black hover:text-gray-600 transition-colors" 
+              aria-label="WhatsApp"
+            >
               <FaWhatsapp className="w-5 h-5" />
             </button>
           </div>
@@ -82,7 +91,11 @@ const Footer = () => {
           >
             CONTACT
           </button>
-          <button className="text-black hover:text-gray-600 transition-colors mr-0 md:mr-[10%] ml-6" aria-label="WhatsApp">
+          <button 
+            onClick={handleWhatsAppClick}
+            className="text-black hover:text-gray-600 transition-colors mr-0 md:mr-[10%] ml-6" 
+            aria-label="WhatsApp"
+          >
             <FaWhatsapp className="w-7 h-7" />
           </button>
         </div>

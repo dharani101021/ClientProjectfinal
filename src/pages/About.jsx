@@ -12,8 +12,8 @@ const About = () => {
   const containerRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
   const { scrollYProgress } = useScroll();
-  // Updated for 7 sections: (7-1)/7 = 6/7 ≈ 0.857 => -85.7%
-  const x = useTransform(scrollYProgress, [0, 1], ['0%', '-85.7%']); 
+  // Updated for 6 sections: (6-1)/6 = 5/6 ≈ 0.833 => -83.3%
+  const x = useTransform(scrollYProgress, [0, 1], ['0%', '-83.3%']); 
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 1024);
@@ -146,17 +146,9 @@ const About = () => {
         <Section mobile>
           <div className="max-w-4xl mx-auto text-center">
             <AnimatedText animate delay={0.2}>
-              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-6" style={{ lineHeight: '1.2' }}>
-                {aboutData.hero.title}<br />
-                <span className="bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent">
-                  {aboutData.hero.subtitle}
-                </span>
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent" style={{ lineHeight: '1.2' }}>
+                {aboutData.hero.title}
               </h1>
-            </AnimatedText>
-            <AnimatedText animate delay={0.4}>
-              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed text-center" style={{ lineHeight: '1.7' }}>
-                {aboutData.hero.description}
-              </p>
             </AnimatedText>
           </div>
         </Section>
@@ -199,10 +191,9 @@ const About = () => {
           mobile={true}
         />
 
-        {/* Second Team Member (Duplicate) */}
+        {/* Second Team Member */}
         <TeamMemberSection 
           member={aboutData.architect2} 
-          // sectionTitle="MEET TEAM MEMBER 2" 
           mobile={true}
         />
 
@@ -240,33 +231,6 @@ const About = () => {
           </div>
         </Section>
 
-        {/* --- OUR JOURNEY (MOBILE) --- */}
-        <Section mobile>
-          <div className="max-w-4xl mx-auto">
-            <AnimatedText>
-              <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-center sm:mb-8 mb-6">
-                {aboutData.ourJourney.title}
-              </h2>
-            </AnimatedText>
-            <div className="space-y-6">
-              <AnimatedText className="flex justify-center" delay={0.4}>
-                <ImageContainer src={aboutData.ourJourney.image.src} alt={aboutData.ourJourney.image.alt} />
-              </AnimatedText>
-              <AnimatedText delay={0.2} className="space-y-4">
-                {aboutData.ourJourney.bio.map((paragraph, i) => (
-                  <p
-                    key={i}
-                    className={`text-xs sm:text-sm text-gray-600 leading-relaxed text-justify${i !== aboutData.ourJourney.bio.length - 1 ? ' mb-4' : ''}`}
-                    style={{ lineHeight: '1.7' }}
-                  >
-                    {paragraph}
-                  </p>
-                ))}
-              </AnimatedText>
-            </div>
-          </div>
-        </Section>
-
         {/* CTA */}
         <Section mobile>
           <div className="max-w-3xl mx-auto text-center">
@@ -298,25 +262,17 @@ const About = () => {
     <div className="min-h-screen">
       <Navigation />
       <HorizontalMovingText />
-      {/* Updated width to 700vw for 7 sections */}
+      {/* Updated width to 600vw for 6 sections */}
       <div className="fixed left-0 w-full overflow-hidden" style={{ top: '80px', height: 'calc(100vh - 160px)' }}>
-        <motion.div ref={containerRef} style={{ x }} className="flex h-full w-[700vw] overflow-hidden gap-0">
+        <motion.div ref={containerRef} style={{ x }} className="flex h-full w-[600vw] overflow-hidden gap-0">
           
           {/* Hero */}
           <Section>
             <div className="max-w-7xl mx-auto text-center px-10 h-full flex flex-col justify-center items-center">
               <AnimatedText animate delay={0.2}>
-                <h1 className="text-3xl lg:text-5xl xl:text-6xl font-bold mb-6" style={{ lineHeight: '1.1' }}>
-                  {aboutData.hero.title}<br />
-                  <span className="bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent">
-                    {aboutData.hero.subtitle}
-                  </span>
+                <h1 className="text-3xl lg:text-5xl xl:text-6xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent" style={{ lineHeight: '1.1' }}>
+                  {aboutData.hero.title}
                 </h1>
-              </AnimatedText>
-              <AnimatedText animate delay={0.4}>
-                <p className="text-base xl:text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed text-center" style={{ lineHeight: '1.8' }}>
-                  {aboutData.hero.description}
-                </p>
               </AnimatedText>
             </div>
           </Section>
@@ -358,10 +314,9 @@ const About = () => {
             sectionTitle="MEET TEAM"
           />
 
-          {/* Second Team Member (Duplicate) */}
+          {/* Second Team Member */}
           <DesktopTeamMemberSection 
             member={aboutData.architect2} 
-            // sectionTitle="MEET TEAM MEMBER 2"
           />
           
           {/* Philosophy */}
@@ -395,43 +350,6 @@ const About = () => {
                   </div>
                 </motion.div>
               </div>
-            </div>
-          </Section>
-
-          {/* --- OUR JOURNEY (DESKTOP) --- MODIFIED: H2 above image on the left --- */}
-          <Section>
-            <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center justify-center gap-12 px-10">
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-                className="w-full lg:w-1/2 flex flex-col items-center space-y-4"
-              >
-                <AnimatedText>
-                  <h2 className="text-xl lg:text-2xl font-bold text-gray-900 text-center">{aboutData.ourJourney.title}</h2>
-                </AnimatedText>
-                <ImageContainer src={aboutData.ourJourney.image.src} alt={aboutData.ourJourney.image.alt} isDesktop={true} />
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                viewport={{ once: true }}
-                className="w-full lg:w-1/2 flex flex-col justify-center space-y-6"
-              >
-                <AnimatedText delay={0.2}>
-                  {aboutData.ourJourney.bio.map((paragraph, i) => (
-                    <p
-                      key={i}
-                      className={`text-base xl:text-lg text-gray-600 leading-relaxed text-justify${i !== aboutData.ourJourney.bio.length - 1 ? ' mb-4' : ''}`}
-                      style={{ lineHeight: '1.8' }}
-                    >
-                      {paragraph}
-                    </p>
-                  ))}
-                </AnimatedText>
-              </motion.div>
             </div>
           </Section>
 

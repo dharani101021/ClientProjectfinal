@@ -4,9 +4,7 @@ import logo1 from '@/assets/logo1.png';
 
 const kooduArchitectureData = {
   hero: {
-    title: "ABOUT",
-    subtitle: "KOODU ARCHITECTURE",
-    description: "A Nest for Architecture, Imagination, and Making."
+    title: "A Nest for Architecture, Imagination, and Making."
   },
   story: {
     title: "OUR STORY",
@@ -96,18 +94,6 @@ const kooduArchitectureData = {
         label: "PRODUCTS"
       }
     ]
-  },
-  // --- NEW SECTION ADDED HERE ---
-  ourJourney: {
-    title: "OUR JOURNEY",
-    bio:["From the spirit of 'Koodu,' two vibrant branches grow:",
-    "Koodal - Collaboration: Our studio extends as a collaborative platform, working alongside architects, artists, craftsmen, and technologists to push creative boundaries and craft exceptional outcomes.",
-    "Koodam Gathering: We are building a state-of-the-art workshop and fabrication space, where young minds, students, and passionate makers come together to learn, build, and transform ideas into reality blending traditional craft and digital fabrication.",
-    ],
-    image: {
-      src: logo1,
-      alt: "A winding road representing the journey of Koodu Architecture"
-    }
   },
   cta: {
     title: "READY TO START YOUR PROJECT?",

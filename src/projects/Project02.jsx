@@ -15,6 +15,13 @@ const Project02 = ({ isVisible = true }) => {
   const [centerIndex, setCenterIndex] = useState(0);
   const navigate = useNavigate();
 
+  // Define the paragraph texts for specific images
+  const paragraphTexts = {
+    2: "Every element within the space is bespoke — from the hand-carved wooden ceiling elements that reinterpret temple beams and brackets, to the sculptural stone mannequin legs that function as understated pedestals for jewellery display.", // Before 3rd image (index 2)
+    5: "Brass highlights, natural stone, and solid timber come together to form a warm and tactile interior, inviting patrons into a setting that feels sacred yet accessible — like a temple devoted to the craft of gold.", // Before 6th image (index 5)
+    9: "The design fuses function with cultural symbolism, creating an environment that feels both rooted and refined." // Before 10th image (index 9)
+  };
+
   // Project information data
   const projectInfo = {
     location: "Mayiladuthurai , India",
@@ -28,6 +35,15 @@ const Project02 = ({ isVisible = true }) => {
     let currentIndex = 0;
     
     projects.forEach((project, projectIndex) => {
+      // Add paragraph before this image if it exists
+      if (paragraphTexts[projectIndex]) {
+        items.push({
+          type: 'paragraph',
+          content: paragraphTexts[projectIndex],
+          index: currentIndex++
+        });
+      }
+      
       // Add the image
       items.push({
         type: 'image',
@@ -66,9 +82,9 @@ const Project02 = ({ isVisible = true }) => {
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
-  // Calculate total items
+  // Calculate total items including paragraphs
   const getTotalItems = () => {
-    return projects.length + 2; // projects + NEXT + project03 preview
+    return projects.length + Object.keys(paragraphTexts).length + 2; // projects + paragraphs + NEXT + project03 preview
   };
 
   // Function to navigate to a specific item
@@ -272,7 +288,7 @@ const Project02 = ({ isVisible = true }) => {
           ? 'w-full max-w-md h-[284px] sm:h-[318px]' // Full size for center image
           : 'w-full max-w-sm h-[220px] sm:h-[250px]'; // Smaller for non-center images
       } else {
-        // For NEXT and project03-preview, use consistent sizing
+        // For paragraphs, NEXT, and project03-preview, use consistent sizing
         return 'w-full max-w-md h-auto min-h-[200px]';
       }
     } else {
@@ -282,8 +298,30 @@ const Project02 = ({ isVisible = true }) => {
     }
   };
 
+  const getParagraphContainerSize = () => {
+    // Fixed size for paragraphs - they don't change based on center position
+    if (isMobile) {
+      return 'w-full max-w-md min-h-[200px] flex items-center justify-center px-6';
+    } else {
+      return 'w-[400px] md:w-[500px] lg:w-[600px] xl:w-[650px] min-h-[250px] md:min-h-[300px] lg:min-h-[350px] xl:min-h-[400px] flex items-center justify-center px-8';
+    }
+  };
+
   const handleNextClick = () => {
     navigate('/project03');
+  };
+
+  // Helper function to determine margin for items
+  const getItemMargin = (index, itemType, isFirstContentItem) => {
+    if (isMobile) return {};
+    
+    if (isFirstContentItem) {
+      // Small additional gap to prevent arrow overlay while keeping images close
+      return { marginLeft: 'clamp(28vw, 33vw, 36vw)' }; // Slight increase to clear the arrow
+    } else {
+      // Normal spacing between subsequent items
+      return { marginLeft: 'clamp(1rem, 2rem, 2rem)' };
+    }
   };
 
   return (
@@ -363,6 +401,40 @@ const Project02 = ({ isVisible = true }) => {
 
           {/* Render content items */}
           {contentItems.map((item, index) => {
+            const isFirstContentItem = index === 0;
+            
+            if (item.type === 'paragraph') {
+              return (
+                <div
+                  key={`paragraph-${item.index}`}
+                  data-item-index={item.index}
+                  className={`
+                    flex-shrink-0 relative transition-all duration-700 ease-in-out
+                    ${getParagraphContainerSize()}
+                    ${item.index === centerIndex ? 'z-10' : 'z-0'}
+                    ${isMobile ? '' : 'mt-[5vh]'}
+                  `}
+                  style={getItemMargin(item.index, 'paragraph', isFirstContentItem)}
+                >
+                  <div className={`
+                    h-full w-full flex items-center justify-center text-center transition-all duration-700 
+                    ${getImageOpacity(item.index)}
+                  `}>
+                    <p className={`
+                      text-black leading-relaxed font-light max-w-[90%] text-left
+                      ${isMobile 
+                        ? 'text-sm' 
+                        : 'text-sm md:text-base lg:text-lg'
+                      }
+                    `}
+                    >
+                      {item.content}
+                    </p>
+                  </div>
+                </div>
+              );
+            }
+
             if (item.type === 'image') {
               const isImageCentered = isMobile ? shouldImageBeFullSize(item) : item.index === centerIndex;
               
@@ -383,11 +455,7 @@ const Project02 = ({ isVisible = true }) => {
                     ${isMobile && item.projectIndex === projects.length - 1 ? 'mb-[50px]' : ''}
                     ${isMobile && item.projectIndex === 0 ? 'mt-[20px]' : ''}
                   `}
-                  style={!isMobile ? {
-                    marginLeft: index === 0 && item.type === 'image'
-                      ? 'clamp(28vw, 32vw, 35vw)'
-                      : 'clamp(1rem, 2rem, 2rem)'
-                  } : {}}
+                  style={getItemMargin(item.index, 'image', isFirstContentItem)}
                 >
                   <div className={`h-full relative overflow-hidden rounded-none md:rounded-none transition-all duration-700 ${getImageOpacity(item.index)}`}>
                     <img
@@ -413,9 +481,7 @@ const Project02 = ({ isVisible = true }) => {
                     ${isMobile ? '' : 'mt-[5vh]'}
                     ${isMobile ? 'mb-[50px]' : ''}
                   `}
-                  style={!isMobile ? {
-                    marginLeft: 'clamp(1rem, 2rem, 2rem)'
-                  } : {}}
+                  style={getItemMargin(item.index, 'next', isFirstContentItem)}
                 >
                   <div className={`h-full w-full relative flex items-center justify-center text-black transition-all duration-700 ${getImageOpacity(item.index)}`}>
                     <span className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-wider">
@@ -438,9 +504,7 @@ const Project02 = ({ isVisible = true }) => {
                     ${isMobile ? '' : 'mt-[5vh]'}
                     ${isMobile ? 'mb-[50px]' : ''}
                   `}
-                  style={!isMobile ? {
-                    marginLeft: 'clamp(1rem, 2rem, 2rem)'
-                  } : {}}
+                  style={getItemMargin(item.index, 'project03-preview', isFirstContentItem)}
                   onClick={handleNextClick}
                 >
                   <div className={`h-full relative overflow-hidden rounded-none md:rounded-none transition-all duration-700 ${getImageOpacity(item.index)}`}>
