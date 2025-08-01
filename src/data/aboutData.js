@@ -15,7 +15,7 @@ const kooduArchitectureData = {
       "We approach each project as a living inquiry — an opportunity to learn, adapt, and create something meaningful, lasting, and deeply human."
     ],
     image: {
-      src: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80",
+      src: logo1,
       alt: "Studio Precht"
     },
     highlights: [
