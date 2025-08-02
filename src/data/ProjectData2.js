@@ -3,7 +3,7 @@ import img1 from '../assets/images/project2/Traditional Jewellary/img1.jpg';
 import img2 from '../assets/images/project2/Traditional Jewellary/img2.jpg';
 import img3 from '../assets/images/project2/Traditional Jewellary/img3.jpg';
 import img4 from '../assets/images/project2/Traditional Jewellary/img4.jpg';
-// import img5 from '../assets/images/project2/Traditional Jewellary/img5.gif';
+import img5 from '../assets/images/project2/Traditional Jewellary/img5.gif';
 import img6 from '../assets/images/project2/Traditional Jewellary/img6.jpg';
 import img7 from '../assets/images/project2/Traditional Jewellary/img7.jpg';
 import img8 from '../assets/images/project2/Traditional Jewellary/img8.jpg';
@@ -36,7 +36,7 @@ export const projects = [
   },
   {
     id: 6,
-    image: img4,
+    image: img5,
   },
   {
     id: 7,
