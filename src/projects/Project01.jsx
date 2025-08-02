@@ -28,7 +28,8 @@ const Project01 = ({ isVisible = true }) => {
   const projectInfo = {
     location: "Chennai, India",
     completed: "Completed in 2022",
-    builtUpArea: "Built-Up Area: 3850sqft"
+    builtUpArea: "Built-Up Area: 3850sqft",
+    description: "Paanai Veedu, translating to 'Pot House,' is a multi-generational residence nestled in a dense urban neighborhood of Chennai"
   };
 
   // Project02 overlay information
@@ -325,8 +326,8 @@ const Project01 = ({ isVisible = true }) => {
     if (isMobile) return {};
     
     if (isFirstContentItem) {
-      // Small additional gap to prevent arrow overlay while keeping images close
-      return { marginLeft: 'clamp(28vw, 33vw, 36vw)' }; // Slight increase to clear the arrow
+      // Increased margin to move images further right, clearing the project info section
+      return { marginLeft: 'clamp(43vw, 54vw, 60vw)' }; // Significantly increased to move images right
     } else {
       // Normal spacing between subsequent items
       return { marginLeft: 'clamp(1rem, 2rem, 2rem)' };
@@ -372,6 +373,9 @@ const Project01 = ({ isVisible = true }) => {
                   <p className="text-xs md:text-sm lg:text-base text-black leading-relaxed font-light">
                     {projectInfo.builtUpArea}
                   </p>
+                  <p className="text-xs md:text-sm lg:text-base text-black leading-relaxed font-light">
+                    {projectInfo.description}
+                  </p>
                 </div>
                 
                 {/* Scroll Indicator */}
@@ -404,6 +408,7 @@ const Project01 = ({ isVisible = true }) => {
                 <p className="text-sm text-black font-light">{projectInfo.location}</p>
                 <p className="text-sm text-black font-light">{projectInfo.completed}</p>
                 <p className="text-sm text-black font-light">{projectInfo.builtUpArea}</p>
+                <p className="text-sm text-black font-light">{projectInfo.description}</p>
               </div>
             </div>
           )}

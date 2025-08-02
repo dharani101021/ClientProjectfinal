@@ -26,7 +26,8 @@ const Project02 = ({ isVisible = true }) => {
   const projectInfo = {
     location: "Mayiladuthurai , India",
     completed: "Completed in 2023",
-    builtUpArea: "Buildup area-180sq.ft"
+    builtUpArea: "Buildup area-180sq.ft",
+    description: "Located in the heart of Mayiladuthurai, this jewellery showroom is a celebration of traditional South Indian craftsmanship, reimagined within a contemporary retail setting."
   };
 
   // Project03 overlay information
@@ -323,8 +324,8 @@ const Project02 = ({ isVisible = true }) => {
     if (isMobile) return {};
     
     if (isFirstContentItem) {
-      // Small additional gap to prevent arrow overlay while keeping images close
-      return { marginLeft: 'clamp(28vw, 33vw, 36vw)' }; // Slight increase to clear the arrow
+      // Updated to match Project01 style
+      return { marginLeft: 'clamp(43vw, 54vw, 60vw)' }; // Same as Project01
     } else {
       // Normal spacing between subsequent items
       return { marginLeft: 'clamp(1rem, 2rem, 2rem)' };
@@ -360,7 +361,7 @@ const Project02 = ({ isVisible = true }) => {
             {!isMobile && (
               <div className="flex items-center gap-8 md:gap-12 lg:gap-16 pl-14">
                 {/* Project Information Section */}
-                <div className="max-w-[280px] lg:max-w-[320px] xl:max-w-[500px] flex flex-col justify-evenly gap-2">
+                <div className="max-w-[280px] lg:max-w-[320px] xl:max-w-[500px] flex flex-col justify-evenly gap-4">
                   <p className="text-xs md:text-sm lg:text-base text-black leading-relaxed font-light">
                     {projectInfo.location}
                   </p>
@@ -369,6 +370,9 @@ const Project02 = ({ isVisible = true }) => {
                   </p>
                   <p className="text-xs md:text-sm lg:text-base text-black leading-relaxed font-light">
                     {projectInfo.builtUpArea}
+                  </p>
+                  <p className="text-xs md:text-sm lg:text-base text-black leading-relaxed font-light">
+                    {projectInfo.description}
                   </p>
                 </div>
                 
@@ -402,6 +406,7 @@ const Project02 = ({ isVisible = true }) => {
                 <p className="text-sm text-black font-light">{projectInfo.location}</p>
                 <p className="text-sm text-black font-light">{projectInfo.completed}</p>
                 <p className="text-sm text-black font-light">{projectInfo.builtUpArea}</p>
+                <p className="text-sm text-black font-light">{projectInfo.description}</p>
               </div>
             </div>
           )}
