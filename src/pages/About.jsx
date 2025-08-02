@@ -78,19 +78,18 @@ const About = () => {
     <Section mobile={mobile}>
       <div className="max-w-4xl mx-auto">
         <div className="space-y-4">
-          <AnimatedText>
-            <h2 className={`${mobile ? 'text-2xl sm:text-3xl md:text-4xl' : 'text-xl lg:text-2xl'} font-bold text-center text-gray-900 tracking-wide mb-2`}>
-              {sectionTitle}
-            </h2>
-          </AnimatedText>
+          {sectionTitle && (
+            <AnimatedText>
+              <h2 className={`${mobile ? 'text-lg sm:text-xl md:text-2xl' : 'text-xl lg:text-2xl'} font-bold text-center text-gray-900 tracking-wide mb-2`}>
+                {sectionTitle}
+              </h2>
+            </AnimatedText>
+          )}
           <AnimatedText className="flex justify-center" delay={0.2}>
             <ImageContainer src={member.image.src} alt={member.image.alt} isDesktop={!mobile} />
           </AnimatedText>
           <AnimatedText delay={0.4} className="text-center space-y-4">
             <div>
-              <h3 className={`${mobile ? 'text-lg sm:text-xl md:text-2xl' : 'text-lg'} font-bold mb-2 text-gray-700`}>
-                {member.title}
-              </h3>
               <h4 className={`${mobile ? 'text-base sm:text-lg' : 'text-lg'} font-medium mb-2`}>{member.name}</h4>
               <p className={`text-gray-600 mb-3 ${mobile ? 'text-xs sm:text-sm' : 'text-base xl:text-lg'}`}>{member.position}</p>
             </div>
@@ -113,9 +112,11 @@ const About = () => {
       <div className="w-full max-w-7xl mx-auto ">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center h-full">
           <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="w-full flex flex-col items-center space-y-4">
-            <AnimatedText>
-              <h2 className="text-xl lg:text-2xl font-bold text-center">{sectionTitle}</h2>
-            </AnimatedText>
+            {sectionTitle && (
+              <AnimatedText>
+                <h2 className="text-xl lg:text-2xl font-bold text-center">{sectionTitle}</h2>
+              </AnimatedText>
+            )}
             <ImageContainer src={member.image.src} alt={member.image.alt} isDesktop={true} />
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }} viewport={{ once: true }} className="space-y-6">
@@ -174,7 +175,7 @@ const About = () => {
                 <div className="grid grid-cols-2 gap-4 pt-6 mt-6 border-t border-gray-200">
                   {aboutData.story.highlights.map((highlight, i) => (
                     <div key={i} className="text-center">
-                      <div className="text-base sm:text-lg font-bold text-gray-900 mb-1">{highlight.value}</div>
+                      <div className="text-xl sm:text-2xl font-bold text-gray-900 mb-1">{highlight.value}</div>
                       <div className="text-xs text-gray-600">{highlight.label}</div>
                     </div>
                   ))}
@@ -187,7 +188,7 @@ const About = () => {
         {/* First Team Member */}
         <TeamMemberSection 
           member={aboutData.architect} 
-          sectionTitle="MEET TEAM" 
+          sectionTitle="MEET THE TEAM" 
           mobile={true}
         />
 
@@ -222,7 +223,7 @@ const About = () => {
               <AnimatedText delay={0.4} className="grid grid-cols-2 gap-4 pt-6">
                 {aboutData.philosophy.statistics.map((stat, i) => (
                   <div key={i} className="text-center">
-                    <div className="text-lg sm:text-xl font-bold text-gray-900 mb-1">{stat.value}</div>
+                    <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">{stat.value}</div>
                     <div className="text-xs text-gray-600 uppercase tracking-wide">{stat.label}</div>
                   </div>
                 ))}
@@ -298,7 +299,7 @@ const About = () => {
                   <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-200">
                     {aboutData.story.highlights.map((highlight, i) => (
                       <div key={i} className="text-center">
-                        <div className="text-xl font-bold text-gray-900 mb-1">{highlight.value}</div>
+                        <div className="text-2xl xl:text-3xl font-bold text-gray-900 mb-1">{highlight.value}</div>
                         <div className="text-xs text-gray-600">{highlight.label}</div>
                       </div>
                     ))}
@@ -311,7 +312,7 @@ const About = () => {
           {/* First Team Member */}
           <DesktopTeamMemberSection 
             member={aboutData.architect} 
-            sectionTitle="MEET TEAM"
+            sectionTitle="MEET THE TEAM"
           />
 
           {/* Second Team Member */}
@@ -342,7 +343,7 @@ const About = () => {
                     <div className="flex flex-col space-y-6">
                       {aboutData.philosophy.statistics.map((stat, i) => (
                         <div key={i} className="text-center">
-                          <div className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</div>
+                          <div className="text-3xl xl:text-4xl font-bold text-gray-900 mb-1">{stat.value}</div>
                           <div className="text-xs text-gray-600 uppercase tracking-wide">{stat.label}</div>
                         </div>
                       ))}

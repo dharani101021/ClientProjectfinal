@@ -392,7 +392,7 @@ const Project01 = ({ isVisible = true }) => {
             {/* Mobile Layout - Only Scroll Indicator */}
             {isMobile && (
               <div className="flex flex-col items-center gap-1 sm:gap-2">
-                <span className=" tracking-[0.1em] sm:tracking-[0.15em] text-sm sm:text-base text-black mt-[50px]">
+                <span className=" tracking-[0.1em] sm:tracking-[0.15em] text-sm sm:text-base text-black mt-[60px]">
                   SCROLL
                 </span>
                 <ArrowUp className="text-black w-4 h-4 sm:w-5 sm:h-5" />

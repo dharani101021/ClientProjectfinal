@@ -92,6 +92,10 @@ const kooduArchitectureData = {
       {
         value: "8+",
         label: "PRODUCTS"
+      },
+      {
+        value: "20,000",
+        label: "BUILD UP AREA (SQFT)"
       }
     ]
   },
