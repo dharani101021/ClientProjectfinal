@@ -336,7 +336,7 @@ const About = () => {
                 </motion.div>
                 <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }} viewport={{ once: true }} className="flex flex-col items-center justify-center gap-6">
                   <AnimatedText>
-                    <h2 className="text-xl lg:text-2xl font-bold mr-20">{aboutData.philosophy.title}</h2>
+                    <h2 className="text-xl lg:text-2xl font-bold text-center ml-[-150px]">{aboutData.philosophy.title}</h2>
                   </AnimatedText>
                   <div className="flex items-center gap-6">
                     <ImageContainer src={aboutData.philosophy.image.src} alt={aboutData.philosophy.image.alt} isDesktop={true} />
