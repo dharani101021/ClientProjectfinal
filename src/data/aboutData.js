@@ -1,6 +1,8 @@
 // src/data/aboutData.js
 
 import logo1 from '@/assets/logo1.png';
+import Arjun from '@/assets/images/about/Arjun.jpg';
+import Tharun from '@/assets/images/about/Tharun.jpg';
 
 const kooduArchitectureData = {
   hero: {
@@ -39,7 +41,7 @@ const kooduArchitectureData = {
       "To Arjun, architecture is not just about designing — it's about doing about imagining boldly, building honestly, and making things that last."
     ],
     image: {
-      src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80",
+      src: Arjun,
       alt: "Chris Precht"
     }
   },
@@ -53,7 +55,7 @@ const kooduArchitectureData = {
       "For Tharun, architecture is code and craft — a space where ideas are built, broken, tested, and refined. His vision is to shape a future where tradition, computation, and craft exist in powerful harmony."
     ],
     image: {
-      src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80",
+      src: Tharun,
       alt: "Alt text"
     }
   },
