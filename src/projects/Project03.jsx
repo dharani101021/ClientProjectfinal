@@ -29,6 +29,13 @@ const Project03 = ({ isVisible = true }) => {
     builtUpArea: "Buildup area-150.ft"
   };
 
+  // Project01 overlay information
+  const project01OverlayInfo = {
+    title: "PAANAI VEEDU",
+    location: "CHENNAI",
+    year: "2022"
+  };
+
   // Create an array with images and paragraphs in correct order
   const createContentItems = () => {
     const items = [];
@@ -513,6 +520,21 @@ const Project03 = ({ isVisible = true }) => {
                       alt={item.project.title}
                       className="w-full h-full object-cover scale-100 transition-transform duration-700 group-hover:scale-105"
                     />
+                    
+                    {/* Overlay Text */}
+                    <div className="absolute inset-0 bg-black bg-opacity-20 flex flex-col justify-end p-4 md:p-6 lg:p-8">
+                      <div className="text-white">
+                        <h3 className="text-lg sm:text-xl md:text-2xl font-medium mb-1 sm:mb-2 tracking-wide">
+                          {project01OverlayInfo.title}
+                        </h3>
+                        <p className="text-sm sm:text-base md:text-lg text-gray-200 mb-1 tracking-wide">
+                          {project01OverlayInfo.location}
+                        </p>
+                        <p className="text-xs sm:text-sm text-gray-300 tracking-wide">
+                          {project01OverlayInfo.year}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               );
